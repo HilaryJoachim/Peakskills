@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { Calendar, MapPin, ArrowRight } from 'lucide-react'
 
@@ -135,7 +137,7 @@ export default function SchedulePreview({ cohorts }: SchedulePreviewProps) {
                             href={`/programs/${cohort.program.slug}#register`}
                             style={{
                               fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600,
-                              fontSize: '13px', color: '#1E88E5', textDecoration: 'none',
+                              fontSize: '13px', color: '#0077B6', textDecoration: 'none',
                               whiteSpace: 'nowrap',
                             }}
                           >

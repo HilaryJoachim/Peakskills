@@ -67,7 +67,7 @@ export default function RequestTrainingForm() {
     setForm(prev => ({ ...prev, [key]: e.target.value }))
 
   const focus = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    (e.currentTarget as HTMLElement).style.borderColor = '#1E88E5'
+    (e.currentTarget as HTMLElement).style.borderColor = '#0077B6'
   }
   const blur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     (e.currentTarget as HTMLElement).style.borderColor = '#DDE4EC'
@@ -249,15 +249,15 @@ export default function RequestTrainingForm() {
           type="submit"
           disabled={status === 'loading'}
           style={{
-            background: '#1E88E5', color: '#fff',
+            background: '#0077B6', color: '#fff',
             padding: '14px 32px', borderRadius: '6px', border: 'none',
             fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '16px',
             cursor: status === 'loading' ? 'wait' : 'pointer',
             display: 'inline-flex', alignItems: 'center', gap: '8px',
             transition: 'background 0.15s',
           }}
-          onMouseEnter={e => { if (status !== 'loading') (e.currentTarget as HTMLElement).style.background = '#1565C0' }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#1E88E5' }}
+          onMouseEnter={e => { if (status !== 'loading') (e.currentTarget as HTMLElement).style.background = '#005F8E' }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0077B6' }}
         >
           <Send size={16} />
           {status === 'loading' ? 'Submitting…' : 'Submit Training Request'}

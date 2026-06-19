@@ -3,19 +3,14 @@ import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import Hero from '@/components/sections/Hero'
 import IndustriesWeServe from '@/components/sections/IndustriesWeServe'
-import TrustStrip from '@/components/sections/TrustStrip'
-import ServicesOverview from '@/components/sections/ServicesOverview'
-import FeaturedPrograms from '@/components/sections/FeaturedPrograms'
 import WhyPeakSkills from '@/components/sections/WhyPeakSkills'
-import TestimonialsExcerpt from '@/components/sections/TestimonialsExcerpt'
-import SchedulePreview from '@/components/sections/SchedulePreview'
+import FeaturedPrograms from '@/components/sections/FeaturedPrograms'
 import SubscribeBand from '@/components/sections/SubscribeBand'
-import {
-  getPrograms,
-  getFeaturedTestimonials,
-  getClients,
-  getUpcomingCohorts,
-} from '@/lib/supabase'
+import EventsShowcase from '@/components/sections/EventsShowcase'
+import CalendarCTA from '@/components/sections/CalendarCTA'
+import TrainingImpact from '@/components/sections/TrainingImpact'
+import CategoriesRibbon from '@/components/sections/CategoriesRibbon'
+import { getPrograms } from '@/lib/supabase'
 
 export const metadata: Metadata = {
   title: 'PeakSkills — Corporate Training, Consulting & Coaching | Tanzania',
@@ -27,26 +22,21 @@ export const metadata: Metadata = {
 export const revalidate = 3600
 
 export default async function HomePage() {
-  const [featuredPrograms, testimonials, clients, upcomingCohorts] = await Promise.all([
-    getPrograms({ featured: true, limit: 6 }),
-    getFeaturedTestimonials(),
-    getClients(),
-    getUpcomingCohorts(6),
-  ])
+  const featuredPrograms = await getPrograms({ limit: 6 })
 
   return (
     <>
       <Header />
       <main>
         <Hero />
-        {/* V2.0: Industries We Serve directly below hero */}
-        <IndustriesWeServe />
-        <TrustStrip clients={clients} />
-        <ServicesOverview />
-        <FeaturedPrograms programs={featuredPrograms} />
+        <CategoriesRibbon />
         <WhyPeakSkills />
-        <TestimonialsExcerpt testimonials={testimonials} />
-        <SchedulePreview cohorts={upcomingCohorts as any} />
+        {/* V2.0: Industries We Serve */}
+        <IndustriesWeServe />
+        <FeaturedPrograms programs={featuredPrograms} />
+        <EventsShowcase />
+        <CalendarCTA />
+        <TrainingImpact />
         <SubscribeBand />
       </main>
       <Footer />

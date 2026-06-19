@@ -32,8 +32,8 @@ export default function TestimonialCard({ testimonial }: TestimonialCardProps) {
           <Star
             key={i}
             size={16}
-            fill={i < testimonial.rating ? '#1E88E5' : 'none'}
-            stroke={i < testimonial.rating ? '#1E88E5' : '#DDE4EC'}
+            fill={i < testimonial.rating ? '#0077B6' : 'none'}
+            stroke={i < testimonial.rating ? '#0077B6' : '#DDE4EC'}
             strokeWidth={1.5}
           />
         ))}

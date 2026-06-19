@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Search, SlidersHorizontal, LayoutGrid, List } from 'lucide-react'
 import ProgramCard from '@/components/cards/ProgramCard'
 import { Program, Category } from '@/lib/supabase'
@@ -24,17 +25,26 @@ const PRICE_OPTIONS = [
 ]
 
 export default function ProgramsCatalogueClient({ programs, categories }: ProgramsCatalogueClientProps) {
+  const searchParams = useSearchParams()
+  const initialCategory = searchParams.get('category') || ''
+
   const [search, setSearch] = useState('')
-  const [categoryFilter, setCategoryFilter] = useState('')
+  const [categoryFilter, setCategoryFilter] = useState(initialCategory)
   const [formatFilter, setFormatFilter] = useState('')
   const [priceFilter, setPriceFilter] = useState('')
   const [view, setView] = useState<'grid' | 'list'>('grid')
+
+  // Update filter if URL param changes (e.g. browser back/forward)
+  useEffect(() => {
+    const cat = searchParams.get('category') || ''
+    setCategoryFilter(cat)
+  }, [searchParams])
 
   const filtered = useMemo(() => {
     return programs.filter(p => {
       if (search && !p.title.toLowerCase().includes(search.toLowerCase()) &&
         !p.short_description?.toLowerCase().includes(search.toLowerCase())) return false
-      if (categoryFilter && p.category_id !== categoryFilter) return false
+      if (categoryFilter && p.category?.slug !== categoryFilter) return false
       if (formatFilter && p.format !== formatFilter) return false
       if (priceFilter && p.price_type !== priceFilter) return false
       return true
@@ -60,25 +70,92 @@ export default function ProgramsCatalogueClient({ programs, categories }: Progra
   return (
     <div style={{ background: '#F4F7FA', minHeight: '100vh', paddingTop: '72px' }}>
       {/* Page header */}
-      <div style={{ background: '#1D2430', padding: '56px 24px' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <nav aria-label="Breadcrumb" style={{ marginBottom: '16px' }}>
-            <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', gap: '8px', fontSize: '13px', color: 'rgba(255,255,255,0.5)' }}>
-              <li><a href="/" style={{ color: 'rgba(255,255,255,0.5)', textDecoration: 'none' }}>Home</a></li>
-              <li aria-hidden>/</li>
-              <li aria-current="page" style={{ color: '#fff' }}>Programs</li>
-            </ol>
-          </nav>
-          <h1 style={{
-            fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700,
-            fontSize: 'clamp(28px, 4vw, 44px)', lineHeight: 1.15,
-            color: '#fff', margin: '0 0 12px',
-          }}>
-            Training Programs
-          </h1>
-          <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '17px', color: 'rgba(255,255,255,0.7)', margin: 0, maxWidth: '560px' }}>
-            Open-enrollment courses and in-house programs across 11 professional categories. Each course links to a dedicated page with full program details, learning outcomes, and scheduling.
-          </p>
+      <div className="relative w-full overflow-hidden" style={{ minHeight: '520px', backgroundColor: '#1D2430' }}>
+        {/* Background Image / Composition */}
+        <div 
+          className="absolute inset-0 z-0" 
+          style={{
+            backgroundImage: 'url(/programs_hero.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center right',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
+          {/* Gradient overlay to ensure text readability on the left */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: 'linear-gradient(to right, rgba(29,36,48,1) 0%, rgba(29,36,48,0.92) 45%, rgba(29,36,48,0.2) 100%)'
+            }}
+          />
+        </div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 h-full flex flex-col justify-center pt-24 pb-24" style={{ minHeight: '520px' }}>
+          <div className="max-w-2xl">
+            
+            {/* Breadcrumb */}
+            <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', fontFamily: 'var(--font-body)', marginBottom: '16px' }}>
+              <a href="/" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'none' }}>Home</a>
+              <span style={{ margin: '0 8px' }}>/</span>
+              <span style={{ color: '#FFFFFF', fontWeight: 500 }}>Programs</span>
+            </div>
+
+            {/* Badge */}
+            <div style={{ marginBottom: '24px' }}>
+              <span style={{ 
+                background: '#009B91', 
+                color: '#FFFFFF', 
+                padding: '6px 16px', 
+                borderRadius: '20px', 
+                fontSize: '12px', 
+                fontWeight: 700,
+                fontFamily: 'var(--font-body)',
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase'
+              }}>
+                Catalogue
+              </span>
+            </div>
+
+            <h1 
+              style={{ 
+                fontFamily: 'Arial, Helvetica, sans-serif',
+                color: '#FFFFFF',
+                fontSize: 'clamp(36px, 5vw, 56px)',
+                fontWeight: 700,
+                lineHeight: 1.15,
+                marginBottom: '24px',
+                letterSpacing: '-0.02em'
+              }}
+            >
+              Elevate Your Team.<br />
+              Transform <span style={{ color: '#4DD0E1' }}>Potential</span> Into<br />
+              <span style={{ color: '#FFB300' }}>Performance</span>
+            </h1>
+
+            {/* Divider Line */}
+            <div style={{ display: 'flex', alignItems: 'center', margin: '32px 0', opacity: 0.8 }}>
+              <div style={{ width: '120px', height: '2px', background: '#FFFFFF' }}></div>
+              <div style={{ 
+                width: '16px', height: '16px', borderRadius: '50%', 
+                border: '2px solid #FFFFFF', background: 'transparent', 
+                margin: '0 16px' 
+              }}></div>
+              <div style={{ width: '120px', height: '2px', background: '#FFFFFF' }}></div>
+            </div>
+
+            <p 
+              style={{ 
+                fontFamily: 'var(--font-body)',
+                color: 'rgba(255,255,255,0.75)',
+                fontSize: '18px',
+                lineHeight: 1.7,
+                maxWidth: '560px'
+              }}
+            >
+              Open-enrollment courses and in-house programs across 11 professional categories. Each course links to a dedicated page with full program details, learning outcomes, and scheduling.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -176,7 +253,7 @@ export default function ProgramsCatalogueClient({ programs, categories }: Progra
               onClick={() => { setSearch(''); setCategoryFilter(''); setFormatFilter(''); setPriceFilter('') }}
               style={{
                 marginTop: '16px', padding: '10px 24px',
-                background: '#1E88E5', color: '#fff', border: 'none',
+                background: '#0077B6', color: '#fff', border: 'none',
                 borderRadius: '6px', fontFamily: 'IBM Plex Sans, sans-serif',
                 fontWeight: 600, fontSize: '14px', cursor: 'pointer',
               }}

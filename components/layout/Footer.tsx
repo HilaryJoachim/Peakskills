@@ -1,36 +1,41 @@
+'use client'
+
 import Link from 'next/link'
-import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook } from 'lucide-react'
+import { Mail, Phone, MapPin } from 'lucide-react'
+
+// Inline SVGs for social brand icons (lucide-react removed brand icons)
+const LinkedInIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+    <rect x="2" y="9" width="4" height="12"/>
+    <circle cx="4" cy="4" r="2"/>
+  </svg>
+)
+const FacebookIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+  </svg>
+)
+const XIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  </svg>
+)
 
 const footerLinks = {
   Programs: [
-    { label: 'Leadership Development', href: '/programs/category/leadership-development' },
-    { label: 'Banking Programs', href: '/programs/category/banking-programs' },
-    { label: 'Government Capacity Building', href: '/programs/category/government-capacity-building' },
-    { label: 'Customer Service Excellence', href: '/programs/category/customer-service-excellence' },
-    { label: 'Project Management', href: '/programs/category/project-management' },
+    { label: 'Leadership Development', href: '/programs?category=leadership-development' },
+    { label: 'Banking Programs', href: '/programs?category=banking-programs' },
+    { label: 'Government Capacity Building', href: '/programs?category=government-capacity-building' },
+    { label: 'Customer Service Excellence', href: '/programs?category=customer-service-excellence' },
+    { label: 'Project Management', href: '/programs?category=project-management' },
     { label: 'All Programs', href: '/programs' },
   ],
   Services: [
-    { label: 'In-House Training', href: '/request-training' },
-    { label: 'Consulting Services', href: '/consulting' },
-    { label: 'Mentorship & Coaching', href: '/mentorship-coaching' },
-    { label: 'Community Programs', href: '/programs/category/community-outreach-programs' },
-  ],
-  Company: [
-    { label: 'About PeakSkills', href: '/about' },
-    { label: 'Our Team', href: '/team' },
-    { label: 'Our Clients', href: '/clients' },
-    { label: 'Case Studies', href: '/case-studies' },
-    { label: 'Events', href: '/events' },
-    { label: 'Gallery', href: '/gallery' },
-    { label: 'Blog', href: '/blog' },
-  ],
-  Resources: [
-    { label: 'Training Schedule', href: '/schedule' },
-    { label: 'Resource Library', href: '/resources' },
-    { label: 'Testimonials', href: '/testimonials' },
-    { label: 'Verify Certificate', href: '/verify-certificate' },
-    { label: 'Contact Us', href: '/contact' },
+    { label: 'Business Growth Strategy', href: '/services' },
+    { label: 'Professional Communication', href: '/services' },
+    { label: 'Youth Leadership Programs', href: '/services' },
+    { label: 'Brand Strategy', href: '/services' },
   ],
 }
 
@@ -39,59 +44,25 @@ export default function Footer() {
 
   return (
     <footer style={{ background: '#1D2430', color: '#A9B4C2', fontFamily: 'Source Sans 3, sans-serif' }}>
-      {/* CTA band above footer */}
-      <div style={{ background: '#1E88E5', padding: '48px 24px', textAlign: 'center' }}>
-        <div style={{ maxWidth: '640px', margin: '0 auto' }}>
-          <h2 style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '28px', color: '#fff', margin: '0 0 12px', lineHeight: 1.2 }}>
-            Ready to invest in your team?
-          </h2>
-          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '17px', margin: '0 0 28px', lineHeight: 1.6 }}>
-            Speak with our training consultants about a program designed around your organization&apos;s specific needs and goals.
-          </p>
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/request-training" style={{
-              background: '#fff', color: '#1E88E5',
-              padding: '12px 28px', borderRadius: '6px',
-              fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '15px',
-              textDecoration: 'none', display: 'inline-block',
-            }}>
-              Request Training
-            </Link>
-            <Link href="/programs" style={{
-              background: 'transparent', color: '#fff',
-              padding: '12px 28px', borderRadius: '6px', border: '2px solid rgba(255,255,255,0.5)',
-              fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '15px',
-              textDecoration: 'none', display: 'inline-block',
-            }}>
-              View Programs
-            </Link>
-          </div>
-        </div>
-      </div>
-
       {/* Main footer */}
-      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '64px 24px 48px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px' }}>
+      <div className="footer-grid" style={{ maxWidth: '1280px', margin: '0 auto', padding: '48px 24px 36px', display: 'grid', gap: '40px' }}>
         {/* Brand column */}
-        <div style={{ gridColumn: 'span 1' }}>
+        <div>
           <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', marginBottom: '16px' }}>
-            <div style={{
-              width: '34px', height: '34px', borderRadius: '7px',
-              background: 'linear-gradient(135deg, #1E88E5 0%, #4DD0E1 100%)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, color: '#fff', fontSize: '17px',
-            }}>P</div>
-            <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '18px', color: '#fff' }}>
-              Peak<span style={{ color: '#4DD0E1' }}>Skills</span>
-            </span>
+            <img 
+              src="/logo.png" 
+              alt="PeakSkills Logo" 
+              style={{ height: '64px', width: 'auto', objectFit: 'contain' }} 
+            />
           </Link>
           <p style={{ fontSize: '14px', lineHeight: 1.7, margin: '0 0 24px', color: '#A9B4C2', maxWidth: '220px' }}>
             Corporate training, consulting, mentorship and coaching for banks, government institutions, NGOs, and growing organizations across Tanzania and East Africa.
           </p>
           <div style={{ display: 'flex', gap: '12px' }}>
             {[
-              { icon: <Linkedin size={18} />, href: '#', label: 'LinkedIn' },
-              { icon: <Twitter size={18} />, href: '#', label: 'Twitter / X' },
-              { icon: <Facebook size={18} />, href: '#', label: 'Facebook' },
+              { icon: <LinkedInIcon />, href: '#', label: 'LinkedIn' },
+              { icon: <XIcon />, href: '#', label: 'X (formerly Twitter)' },
+              { icon: <FacebookIcon />, href: '#', label: 'Facebook' },
             ].map((s) => (
               <a key={s.label} href={s.href} aria-label={s.label} style={{
                 width: '36px', height: '36px', borderRadius: '6px',
@@ -111,8 +82,9 @@ export default function Footer() {
             </h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {links.map((link) => (
-                <li key={link.href}>
+                <li key={link.label}>
                   <Link href={link.href} style={{ color: '#A9B4C2', textDecoration: 'none', fontSize: '14px', lineHeight: 1.4 }}
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                     onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#fff' }}
                     onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#A9B4C2' }}
                   >
@@ -152,8 +124,6 @@ export default function Footer() {
           </p>
           <div style={{ display: 'flex', gap: '24px' }}>
             {[
-              { label: 'Privacy Policy', href: '/privacy' },
-              { label: 'Terms of Service', href: '/terms' },
               { label: 'Verify Certificate', href: '/verify-certificate' },
             ].map((l) => (
               <Link key={l.href} href={l.href} style={{ fontSize: '13px', color: '#A9B4C2', textDecoration: 'none' }}>{l.label}</Link>
@@ -161,6 +131,17 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      <style>{`
+        .footer-grid {
+          grid-template-columns: 2fr 1fr 1fr 1fr;
+        }
+        @media (max-width: 1024px) {
+          .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 640px) {
+          .footer-grid { grid-template-columns: 1fr; }
+        }
+      `}</style>
     </footer>
   )
 }

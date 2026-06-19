@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import { BookOpen, Building2, BarChart3, UserCheck, Award, Monitor } from 'lucide-react'
 
@@ -54,7 +56,7 @@ export default function ServicesOverview() {
         <div style={{ textAlign: 'center', maxWidth: '580px', margin: '0 auto 56px' }}>
           <p style={{
             fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600,
-            fontSize: '12px', color: '#1E88E5', textTransform: 'uppercase',
+            fontSize: '12px', color: '#0077B6', textTransform: 'uppercase',
             letterSpacing: '0.08em', margin: '0 0 12px',
           }}>
             What We Do
@@ -90,7 +92,7 @@ export default function ServicesOverview() {
                 gap: '16px',
                 transition: 'border-color 0.2s, box-shadow 0.2s',
               }}
-              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = '#1E88E5'; el.style.boxShadow = '0 4px 16px rgba(30,136,229,0.08)' }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = '#0077B6'; el.style.boxShadow = '0 4px 16px rgba(30,136,229,0.08)' }}
               onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = '#DDE4EC'; el.style.boxShadow = 'none' }}
             >
               <div style={{
@@ -114,7 +116,7 @@ export default function ServicesOverview() {
                 href={service.href}
                 style={{
                   fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600,
-                  fontSize: '14px', color: '#1E88E5', textDecoration: 'none',
+                  fontSize: '14px', color: '#0077B6', textDecoration: 'none',
                   display: 'inline-flex', alignItems: 'center', gap: '4px',
                 }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.textDecoration = 'underline' }}

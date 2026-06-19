@@ -68,6 +68,10 @@ export default async function ProgramDetailPage({ params }: Props) {
     'hybrid': 'Online & In-Person',
   }
 
+  const sessionDateString = nextCohort ? `${formatDateFull(nextCohort.start_date)} – ${formatDateFull(nextCohort.end_date)}` : '';
+  const locationString = nextCohort?.location ? nextCohort.location.split('—')[0].trim() : '';
+  const registerUrl = `/register?program=${encodeURIComponent(program.title)}&session=${encodeURIComponent(sessionDateString)}&location=${encodeURIComponent(locationString)}`;
+
   return (
     <>
       <Header />
@@ -150,30 +154,21 @@ export default async function ProgramDetailPage({ params }: Props) {
                 </div>
 
                 {/* Primary CTAs — visible without scrolling */}
-                <div style={{ display: 'flex', gap: '12px', marginTop: '36px', flexWrap: 'wrap' }}>
-                  <Link
-                    href="#register"
-                    style={{
-                      background: '#1E88E5', color: '#fff',
-                      padding: '13px 28px', borderRadius: '6px',
-                      fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '15px',
-                      textDecoration: 'none', display: 'inline-block',
-                    }}
-                  >
-                    Register for This Session
-                  </Link>
-                  <Link
-                    href="/request-training"
-                    style={{
-                      background: 'transparent', color: '#fff',
-                      padding: '13px 28px', borderRadius: '6px',
-                      border: '2px solid rgba(255,255,255,0.3)',
-                      fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '15px',
-                      textDecoration: 'none', display: 'inline-block',
-                    }}
-                  >
-                    Request for Your Organization
-                  </Link>
+                <div style={{ display: 'flex', gap: '20px', marginTop: '36px', flexWrap: 'wrap' }}>
+                  <div style={{ flex: '1', minWidth: '240px', maxWidth: '300px' }}>
+                    <Link
+                      href={registerUrl}
+                      style={{
+                        background: '#0077B6', color: '#fff',
+                        padding: '13px 28px', borderRadius: '6px', textAlign: 'center',
+                        fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '15px',
+                        textDecoration: 'none', display: 'inline-block',
+                      }}
+                    >
+                      Register For This Session
+                    </Link>
+                  </div>
+
                 </div>
               </div>
 
@@ -215,7 +210,7 @@ export default async function ProgramDetailPage({ params }: Props) {
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '14px' }}>
                     {program.learning_outcomes.map((outcome, i) => (
                       <li key={i} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                        <CheckCircle size={18} style={{ color: '#1E88E5', flexShrink: 0, marginTop: '3px' }} strokeWidth={2} />
+                        <CheckCircle size={18} style={{ color: '#0077B6', flexShrink: 0, marginTop: '3px' }} strokeWidth={2} />
                         <span style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16px', lineHeight: 1.6, color: '#1D2430' }}>
                           {outcome}
                         </span>
@@ -231,10 +226,24 @@ export default async function ProgramDetailPage({ params }: Props) {
                   <h2 id="audience-heading" style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '22px', color: '#1D2430', margin: '0 0 20px', paddingBottom: '12px', borderBottom: '2px solid #DDE4EC' }}>
                     Who This Program Is For
                   </h2>
-                  <div style={{ background: '#F4F7FA', borderRadius: '8px', padding: '24px', borderLeft: '4px solid #1E88E5' }}>
-                    <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                      <Users size={20} style={{ color: '#1E88E5', flexShrink: 0, marginTop: '2px' }} strokeWidth={2} />
-                      <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16px', lineHeight: 1.65, color: '#1D2430', margin: 0 }}>
+                  <div style={{ 
+                    position: 'relative', overflow: 'hidden',
+                    background: 'linear-gradient(135deg, #0A1628 0%, #1D2430 45%, #0D2137 100%)', 
+                    borderRadius: '8px', padding: '24px',
+                    boxShadow: '0 8px 24px rgba(29,36,48,0.1)'
+                  }}>
+                    {/* Decorative dot-grid overlay */}
+                    <div
+                      style={{
+                        position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                        zIndex: 0, opacity: 0.06,
+                        backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
+                        backgroundSize: '24px 24px',
+                      }}
+                    />
+                    <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                      <Users size={22} style={{ color: '#4DD0E1', flexShrink: 0, marginTop: '2px' }} strokeWidth={2} />
+                      <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.9)', margin: 0 }}>
                         {program.target_audience}
                       </p>
                     </div>
@@ -254,7 +263,7 @@ export default async function ProgramDetailPage({ params }: Props) {
                     { icon: <Building2 size={20} strokeWidth={2} />, label: 'Delivery Options', value: 'Public & In-House' },
                   ].map((item, i) => (
                     <div key={i} style={{ border: '1px solid #DDE4EC', borderRadius: '8px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <div style={{ color: '#1E88E5' }}>{item.icon}</div>
+                      <div style={{ color: '#0077B6' }}>{item.icon}</div>
                       <p style={{ margin: 0, fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '12px', color: '#5C6B7A', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                         {item.label}
                       </p>
@@ -272,84 +281,32 @@ export default async function ProgramDetailPage({ params }: Props) {
                   <h2 id="cert-heading" style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '22px', color: '#1D2430', margin: '0 0 20px', paddingBottom: '12px', borderBottom: '2px solid #DDE4EC' }}>
                     Certification
                   </h2>
-                  <div style={{ background: '#F4F7FA', borderRadius: '8px', padding: '24px', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <Award size={24} style={{ color: '#1E88E5', flexShrink: 0, marginTop: '2px' }} strokeWidth={2} />
-                    <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16px', lineHeight: 1.65, color: '#1D2430', margin: 0 }}>
-                      {program.certification_info}
-                    </p>
+                  <div style={{ 
+                    position: 'relative', overflow: 'hidden',
+                    background: 'linear-gradient(135deg, #0A1628 0%, #1D2430 45%, #0D2137 100%)', 
+                    borderRadius: '8px', padding: '24px',
+                    boxShadow: '0 8px 24px rgba(29,36,48,0.1)'
+                  }}>
+                    {/* Decorative dot-grid overlay */}
+                    <div
+                      style={{
+                        position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                        zIndex: 0, opacity: 0.06,
+                        backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
+                        backgroundSize: '24px 24px',
+                      }}
+                    />
+                    <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                      <Award size={22} style={{ color: '#FFB300', flexShrink: 0, marginTop: '2px' }} strokeWidth={2} />
+                      <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.9)', margin: 0 }}>
+                        {program.certification_info}
+                      </p>
+                    </div>
                   </div>
                 </section>
               )}
 
-              {/* Schedule / Registration */}
-              <section id="register" aria-labelledby="schedule-heading">
-                <h2 id="schedule-heading" style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '22px', color: '#1D2430', margin: '0 0 20px', paddingBottom: '12px', borderBottom: '2px solid #DDE4EC' }}>
-                  Upcoming Sessions
-                </h2>
 
-                {upcomingCohorts.length > 0 ? (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    {upcomingCohorts.map(cohort => {
-                      const s = STATUS_STYLES[cohort.status] ?? STATUS_STYLES.open
-                      return (
-                        <div key={cohort.id} style={{
-                          border: '1px solid #DDE4EC', borderRadius: '8px', padding: '20px 24px',
-                          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                          flexWrap: 'wrap', gap: '16px',
-                        }}>
-                          <div>
-                            <p style={{ margin: '0 0 4px', fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '15px', color: '#1D2430', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <Calendar size={15} strokeWidth={2} style={{ color: '#1E88E5' }} />
-                              {formatDateFull(cohort.start_date)} – {formatDateFull(cohort.end_date)}
-                            </p>
-                            {cohort.location && (
-                              <p style={{ margin: '2px 0 0', fontSize: '14px', color: '#5C6B7A', fontFamily: 'Source Sans 3, sans-serif', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <MapPin size={13} strokeWidth={2} />
-                                {cohort.location}
-                              </p>
-                            )}
-                            <p style={{ margin: '6px 0 0', fontSize: '13px', color: '#5C6B7A', fontFamily: 'Source Sans 3, sans-serif' }}>
-                              {cohort.seats_available} seats available
-                            </p>
-                          </div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                            <span style={{ background: s.bg, color: s.color, fontSize: '12px', fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, padding: '4px 12px', borderRadius: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                              {s.label}
-                            </span>
-                            {cohort.status !== 'full' && (
-                              <Link
-                                href={`/contact?program=${encodeURIComponent(program.title)}&cohort=${cohort.id}`}
-                                style={{
-                                  background: '#1E88E5', color: '#fff',
-                                  padding: '10px 20px', borderRadius: '6px',
-                                  fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '14px',
-                                  textDecoration: 'none', whiteSpace: 'nowrap',
-                                }}
-                              >
-                                Register
-                              </Link>
-                            )}
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </div>
-                ) : (
-                  <div style={{ border: '1px dashed #DDE4EC', borderRadius: '8px', padding: '32px', textAlign: 'center' }}>
-                    <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16px', color: '#5C6B7A', margin: '0 0 16px' }}>
-                      No upcoming sessions are currently scheduled for this program.
-                    </p>
-                    <Link href="/contact" style={{
-                      background: '#1E88E5', color: '#fff',
-                      padding: '10px 24px', borderRadius: '6px',
-                      fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '14px',
-                      textDecoration: 'none', display: 'inline-block',
-                    }}>
-                      Contact Us to Arrange a Session
-                    </Link>
-                  </div>
-                )}
-              </section>
             </div>
 
             {/* Right: Sidebar */}
@@ -378,30 +335,16 @@ export default async function ProgramDetailPage({ params }: Props) {
                   </div>
                 )}
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <Link
-                    href="#register"
-                    style={{
-                      background: '#1E88E5', color: '#fff',
-                      padding: '13px 20px', borderRadius: '6px', textAlign: 'center',
-                      fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '15px',
-                      textDecoration: 'none', display: 'block',
-                    }}
-                  >
-                    Register for This Session
-                  </Link>
-                  <Link
-                    href="/request-training"
-                    style={{
-                      background: '#F4F7FA', color: '#1D2430',
-                      padding: '13px 20px', borderRadius: '6px', textAlign: 'center', border: '1.5px solid #DDE4EC',
-                      fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '15px',
-                      textDecoration: 'none', display: 'block',
-                    }}
-                  >
-                    Request for Your Organization
-                  </Link>
+                {/* Registration Info */}
+                <div style={{ marginTop: '16px' }}>
+                  <p style={{ margin: 0, fontFamily: 'Source Sans 3, sans-serif', fontSize: '14px', color: '#5C6B7A', lineHeight: 1.5 }}>
+                    Available seats can be reserved through the{' '}
+                    <Link href={registerUrl} style={{ color: '#0077B6', textDecoration: 'underline', fontWeight: 600 }}>
+                      registration form
+                    </Link>.
+                  </p>
                 </div>
+
 
                 {/* Quick facts */}
                 <div style={{ marginTop: '24px', paddingTop: '20px', borderTop: '1px solid #DDE4EC', display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -420,46 +363,42 @@ export default async function ProgramDetailPage({ params }: Props) {
               </div>
 
               {/* Corporate inquiry card */}
-              <div style={{ background: '#1D2430', borderRadius: '10px', padding: '28px' }}>
-                <h3 style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '16px', color: '#fff', margin: '0 0 10px' }}>
-                  Training your whole team?
-                </h3>
-                <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '14px', lineHeight: 1.65, color: '#A9B4C2', margin: '0 0 20px' }}>
-                  We can deliver this program exclusively for your organization — customized for your sector, at your premises, on your schedule.
-                </p>
-                <Link
-                  href={`/request-training?program=${encodeURIComponent(program.title)}`}
+              <div style={{ 
+                position: 'relative', overflow: 'hidden',
+                background: 'linear-gradient(135deg, #0A1628 0%, #1D2430 45%, #0D2137 100%)', 
+                borderRadius: '10px', padding: '28px',
+                boxShadow: '0 8px 24px rgba(29,36,48,0.1)'
+              }}>
+                {/* Decorative dot-grid overlay */}
+                <div
                   style={{
-                    background: '#1E88E5', color: '#fff',
-                    padding: '11px 20px', borderRadius: '6px', textAlign: 'center',
-                    fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '14px',
-                    textDecoration: 'none', display: 'block',
+                    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                    zIndex: 0, opacity: 0.06,
+                    backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
+                    backgroundSize: '24px 24px',
                   }}
-                >
-                  Request In-House Delivery
-                </Link>
+                />
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <h3 style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '16px', color: '#fff', margin: '0 0 10px' }}>
+                    Training your whole team?
+                  </h3>
+                  <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '14px', lineHeight: 1.65, color: 'rgba(255,255,255,0.85)', margin: '0 0 20px' }}>
+                    We can deliver this program exclusively for your organization — customized for your sector, at your premises, on your schedule.
+                  </p>
+                  <Link
+                    href={`/request-training?program=${encodeURIComponent(program.title)}`}
+                    style={{
+                      background: '#4DD0E1', color: '#0A1628',
+                      padding: '11px 20px', borderRadius: '6px', textAlign: 'center',
+                      fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '14px',
+                      textDecoration: 'none', display: 'block',
+                    }}
+                  >
+                    Request In-House Delivery
+                  </Link>
+                </div>
               </div>
             </aside>
-          </div>
-        </div>
-
-        {/* ── CLOSING CTA ───────────────────────────────────── */}
-        <div style={{ background: '#F4F7FA', padding: '64px 24px', borderTop: '1px solid #DDE4EC' }}>
-          <div style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center' }}>
-            <h2 style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '30px', color: '#1D2430', margin: '0 0 12px' }}>
-              Ready to enroll your team?
-            </h2>
-            <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16px', lineHeight: 1.65, color: '#5C6B7A', margin: '0 0 28px' }}>
-              Register individuals for an upcoming cohort, or speak with us about a fully customized in-house delivery for your organization.
-            </p>
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link href="#register" style={{ background: '#1E88E5', color: '#fff', padding: '12px 28px', borderRadius: '6px', fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '15px', textDecoration: 'none' }}>
-                Register for This Session
-              </Link>
-              <Link href="/request-training" style={{ background: '#1D2430', color: '#fff', padding: '12px 28px', borderRadius: '6px', fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '15px', textDecoration: 'none' }}>
-                Request In-House Training
-              </Link>
-            </div>
           </div>
         </div>
 

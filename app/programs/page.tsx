@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Metadata } from 'next'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
@@ -22,7 +23,9 @@ export default async function ProgramsPage() {
     <>
       <Header />
       <main>
-        <ProgramsCatalogueClient programs={programs} categories={categories} />
+        <Suspense fallback={<div style={{ padding: '100px', textAlign: 'center' }}>Loading programs...</div>}>
+          <ProgramsCatalogueClient programs={programs} categories={categories} />
+        </Suspense>
       </main>
       <Footer />
     </>

@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import TestimonialCard from '@/components/cards/TestimonialCard'
 import { Testimonial } from '@/lib/supabase'
@@ -14,7 +16,7 @@ export default function TestimonialsExcerpt({ testimonials }: TestimonialsExcerp
         <div style={{ textAlign: 'center', maxWidth: '560px', margin: '0 auto 56px' }}>
           <p style={{
             fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600,
-            fontSize: '12px', color: '#1E88E5', textTransform: 'uppercase',
+            fontSize: '12px', color: '#0077B6', textTransform: 'uppercase',
             letterSpacing: '0.08em', margin: '0 0 12px',
           }}>
             Client Feedback
@@ -54,8 +56,8 @@ export default function TestimonialsExcerpt({ testimonials }: TestimonialsExcerp
             href="/testimonials"
             style={{
               fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '14px',
-              color: '#1E88E5', textDecoration: 'none',
-              padding: '10px 24px', border: '1.5px solid #1E88E5', borderRadius: '6px',
+              color: '#0077B6', textDecoration: 'none',
+              padding: '10px 24px', border: '1.5px solid #0077B6', borderRadius: '6px',
               display: 'inline-block', transition: 'background 0.15s',
             }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#EBF5FF' }}

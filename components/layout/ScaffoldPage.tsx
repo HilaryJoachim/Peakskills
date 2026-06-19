@@ -41,7 +41,7 @@ export default function ScaffoldPage({ title, description, eyebrow }: ScaffoldPa
             <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '15px', color: '#5C6B7A', margin: '0 0 24px' }}>
               Full content for this page will be published shortly.
             </p>
-            <Link href="/" style={{ color: '#1E88E5', fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '14px', textDecoration: 'none' }}>
+            <Link href="/" style={{ color: '#0077B6', fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '14px', textDecoration: 'none' }}>
               ← Return to Homepage
             </Link>
           </div>

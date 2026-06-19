@@ -5,35 +5,23 @@ import Link from 'next/link'
 import { Menu, X, ChevronDown } from 'lucide-react'
 
 const navLinks = [
+  { label: 'Home', href: '/' },
   {
     label: 'Programs',
     href: '/programs',
     children: [
       { label: 'All Programs', href: '/programs' },
-      { label: 'Leadership Development', href: '/programs/category/leadership-development' },
-      { label: 'Banking Programs', href: '/programs/category/banking-programs' },
-      { label: 'Government Capacity Building', href: '/programs/category/government-capacity-building' },
-      { label: 'Customer Service Excellence', href: '/programs/category/customer-service-excellence' },
-      { label: 'Project Management', href: '/programs/category/project-management' },
-      { label: 'Human Resources', href: '/programs/category/human-resources' },
-      { label: 'Community Outreach', href: '/programs/category/community-outreach-programs' },
+      { label: 'Leadership Development', href: '/programs?category=leadership-development' },
+      { label: 'Banking Programs', href: '/programs?category=banking-programs' },
+      { label: 'Government Capacity Building', href: '/programs?category=government-capacity-building' },
+      { label: 'Customer Service Excellence', href: '/programs?category=customer-service-excellence' },
+      { label: 'Project Management', href: '/programs?category=project-management' },
+      { label: 'Human Resources', href: '/programs?category=human-resources' },
+      { label: 'Community Outreach', href: '/programs?category=community-outreach-programs' },
     ],
   },
-  { label: 'Consulting', href: '/consulting' },
-  { label: 'Mentorship & Coaching', href: '/mentorship-coaching' },
-  { label: 'Schedule', href: '/schedule' },
-  {
-    label: 'About',
-    href: '/about',
-    children: [
-      { label: 'About PeakSkills', href: '/about' },
-      { label: 'Our Team', href: '/team' },
-      { label: 'Our Clients', href: '/clients' },
-      { label: 'Case Studies', href: '/case-studies' },
-      { label: 'Gallery', href: '/gallery' },
-    ],
-  },
-  { label: 'Blog', href: '/blog' },
+  { label: 'Services', href: '/services' },
+  { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ]
 
@@ -81,15 +69,11 @@ export default function Header() {
           style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
           aria-label="PeakSkills — Home"
         >
-          <div style={{
-            width: '36px', height: '36px', borderRadius: '8px',
-            background: 'linear-gradient(135deg, #1E88E5 0%, #4DD0E1 100%)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, color: '#fff', fontSize: '18px',
-          }}>P</div>
-          <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '20px', color: '#fff', letterSpacing: '-0.3px' }}>
-            Peak<span style={{ color: '#4DD0E1' }}>Skills</span>
-          </span>
+          <img 
+            src="/logo.png" 
+            alt="PeakSkills Logo" 
+            style={{ height: '56px', width: 'auto', objectFit: 'contain' }} 
+          />
         </Link>
 
         {/* Desktop Nav */}
@@ -131,7 +115,7 @@ export default function Header() {
                       color: '#1D2430', textDecoration: 'none',
                       transition: 'background 0.15s, color 0.15s',
                     }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#F4F7FA'; (e.currentTarget as HTMLElement).style.color = '#1E88E5' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#F4F7FA'; (e.currentTarget as HTMLElement).style.color = '#0077B6' }}
                     onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#1D2430' }}
                     >{child.label}</Link>
                   ))}
@@ -145,15 +129,15 @@ export default function Header() {
         <Link
           href="/request-training"
           style={{
-            background: '#1E88E5', color: '#fff',
+            background: '#0077B6', color: '#fff',
             padding: '9px 20px', borderRadius: '6px',
             fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '14px',
             textDecoration: 'none', whiteSpace: 'nowrap',
             transition: 'background 0.15s',
           }}
           className="cta-btn"
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#1565C0' }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#1E88E5' }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#005F8E' }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0077B6' }}
         >
           Request Training
         </Link>
@@ -218,7 +202,7 @@ export default function Header() {
               onClick={() => setMobileOpen(false)}
               style={{
                 display: 'block', textAlign: 'center',
-                background: '#1E88E5', color: '#fff',
+                background: '#0077B6', color: '#fff',
                 padding: '14px 24px', borderRadius: '8px',
                 fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '16px',
                 textDecoration: 'none',
