@@ -29,6 +29,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -62,17 +63,17 @@ export default function Header() {
         alignItems: 'center',
       }}
     >
-      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <div className="header-container" style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         {/* Logo */}
         <Link
           href="/"
-          style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
+          style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', flexShrink: 1, minWidth: 0 }}
           aria-label="PeakSkills — Home"
         >
           <img 
             src="/logo.png" 
             alt="PeakSkills Logo" 
-            style={{ height: '56px', width: 'auto', objectFit: 'contain' }} 
+            style={{ height: 'auto', maxHeight: '56px', width: 'auto', maxWidth: '100%', objectFit: 'contain' }} 
           />
         </Link>
 
@@ -150,6 +151,8 @@ export default function Header() {
           style={{
             display: 'none', background: 'none', border: 'none', cursor: 'pointer',
             color: '#fff', padding: '8px', borderRadius: '6px',
+            minWidth: '44px', minHeight: '44px', flexShrink: 0,
+            alignItems: 'center', justifyContent: 'center'
           }}
           className="hamburger-btn"
         >
@@ -171,19 +174,41 @@ export default function Header() {
         >
           {navLinks.map((link) => (
             <div key={link.href}>
-              <Link
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                style={{
-                  display: 'block', padding: '14px 16px', borderRadius: '8px',
-                  fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '17px',
-                  color: '#fff', textDecoration: 'none',
-                  borderBottom: '1px solid rgba(255,255,255,0.08)',
-                }}
-              >
-                {link.label}
-              </Link>
-              {link.children && (
+              <div style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                borderBottom: '1px solid rgba(255,255,255,0.08)',
+              }}>
+                <Link
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  style={{
+                    display: 'block', padding: '14px 16px', borderRadius: '8px',
+                    fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '17px',
+                    color: '#fff', textDecoration: 'none', flex: 1,
+                  }}
+                >
+                  {link.label}
+                </Link>
+                {link.children && (
+                  <button
+                    onClick={() => setMobileExpanded(mobileExpanded === link.href ? null : link.href)}
+                    style={{
+                      background: 'none', border: 'none', color: '#fff', padding: '14px 16px',
+                      cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                    }}
+                    aria-label={`Toggle ${link.label} menu`}
+                  >
+                    <ChevronDown
+                      size={20}
+                      style={{
+                        transform: mobileExpanded === link.href ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 0.2s',
+                      }}
+                    />
+                  </button>
+                )}
+              </div>
+              {link.children && mobileExpanded === link.href && (
                 <div style={{ paddingLeft: '16px' }}>
                   {link.children.map((child) => (
                     <Link key={child.href} href={child.href} onClick={() => setMobileOpen(false)} style={{
@@ -219,6 +244,7 @@ export default function Header() {
           .desktop-nav { display: none !important; }
           .cta-btn { display: none !important; }
           .hamburger-btn { display: flex !important; }
+          .header-container { padding: 0 16px !important; }
         }
       `}</style>
     </header>

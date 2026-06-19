@@ -106,7 +106,8 @@ export default function ScheduleClient() {
                     fontWeight: isActive ? 600 : 500,
                     fontSize: '15px',
                     transition: 'all 0.2s',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    minHeight: '44px'
                   }}
                   onMouseEnter={e => {
                     if (!isActive) e.currentTarget.style.color = '#1D2430'

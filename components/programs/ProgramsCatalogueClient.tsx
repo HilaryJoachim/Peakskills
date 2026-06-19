@@ -34,6 +34,18 @@ export default function ProgramsCatalogueClient({ programs, categories }: Progra
   const [priceFilter, setPriceFilter] = useState('')
   const [view, setView] = useState<'grid' | 'list'>('grid')
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768 && view !== 'grid') {
+        setView('grid')
+      }
+    }
+    window.addEventListener('resize', handleResize)
+    // Run once on mount to catch initial mobile loads
+    handleResize()
+    return () => window.removeEventListener('resize', handleResize)
+  }, [view])
+
   // Update filter if URL param changes (e.g. browser back/forward)
   useEffect(() => {
     const cat = searchParams.get('category') || ''
@@ -215,7 +227,7 @@ export default function ProgramsCatalogueClient({ programs, categories }: Progra
           </span>
 
           {/* View toggle */}
-          <div style={{ display: 'flex', border: '1.5px solid #DDE4EC', borderRadius: '6px', overflow: 'hidden' }}>
+          <div className="hidden md:flex" style={{ border: '1.5px solid #DDE4EC', borderRadius: '6px', overflow: 'hidden' }}>
             <button
               onClick={() => setView('grid')}
               aria-label="Grid view"
@@ -264,7 +276,7 @@ export default function ProgramsCatalogueClient({ programs, categories }: Progra
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: view === 'list' ? '1fr' : 'repeat(auto-fill, minmax(300px, 1fr))',
+            gridTemplateColumns: view === 'list' ? '1fr' : 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
             gap: '24px',
           }}>
             {filtered.map(program => (

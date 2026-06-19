@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import ProgramCard from '@/components/cards/ProgramCard'
 import { Program } from '@/lib/supabase'
@@ -10,8 +9,6 @@ interface FeaturedProgramsProps {
 }
 
 export default function FeaturedPrograms({ programs }: FeaturedProgramsProps) {
-  const [view, setView] = useState<'grid' | 'list'>('grid')
-
   return (
     <section style={{ background: '#ffffff', padding: '36px 24px 40px' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
@@ -58,78 +55,13 @@ export default function FeaturedPrograms({ programs }: FeaturedProgramsProps) {
               All courses include materials, assessments, and a certificate of completion.
             </p>
           </div>
-
-          {/* Right: Grid / List toggle */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            border: '1.5px solid #DDE4EC',
-            borderRadius: '8px',
-            overflow: 'hidden',
-            flexShrink: 0,
-          }}>
-            <button
-              onClick={() => setView('grid')}
-              aria-label="Grid view"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '8px 16px',
-                border: 'none',
-                borderRight: '1.5px solid #DDE4EC',
-                cursor: 'pointer',
-                fontFamily: 'IBM Plex Sans, sans-serif',
-                fontWeight: 600,
-                fontSize: '13px',
-                background: view === 'grid' ? '#F4F7FA' : '#ffffff',
-                color: view === 'grid' ? '#1D2430' : '#5C6B7A',
-                transition: 'background 0.15s, color 0.15s',
-              }}
-            >
-              {/* Grid icon */}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
-              </svg>
-              Grid
-            </button>
-            <button
-              onClick={() => setView('list')}
-              aria-label="List view"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '8px 16px',
-                border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'IBM Plex Sans, sans-serif',
-                fontWeight: 600,
-                fontSize: '13px',
-                background: view === 'list' ? '#F4F7FA' : '#ffffff',
-                color: view === 'list' ? '#1D2430' : '#5C6B7A',
-                transition: 'background 0.15s, color 0.15s',
-              }}
-            >
-              {/* List icon */}
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
-                <line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/>
-                <line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
-              </svg>
-              List
-            </button>
-          </div>
         </div>
 
         {/* ── Cards ── */}
         {programs.length > 0 ? (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: view === 'grid'
-              ? 'repeat(auto-fill, minmax(320px, 1fr))'
-              : '1fr',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
             gap: '24px',
           }}>
             {programs.map((program) => (
@@ -137,7 +69,6 @@ export default function FeaturedPrograms({ programs }: FeaturedProgramsProps) {
                 key={program.id}
                 program={program}
                 variant="featured"
-                listView={view === 'list'}
               />
             ))}
           </div>

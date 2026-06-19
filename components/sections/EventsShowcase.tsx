@@ -191,8 +191,10 @@ export default function EventsShowcase() {
   const track1Ref = useRef<HTMLDivElement>(null)
   const track2Ref = useRef<HTMLDivElement>(null)
   const animRef  = useRef<number | null>(null)
-  const posRef   = useRef(0)
-  const pausedRef = useRef(false)
+  const pos1Ref  = useRef(0)
+  const pos2Ref  = useRef(0)
+  const paused1Ref = useRef(false)
+  const paused2Ref = useRef(false)
 
   // Duplicate cards for seamless infinite loop
   const DOUBLED1 = [...EVENTS, ...EVENTS, ...EVENTS]
@@ -208,14 +210,18 @@ export default function EventsShowcase() {
 
   /* ── Animation loop ── */
   const animate = useCallback(function loop() {
-    if (!pausedRef.current && track1Ref.current && track2Ref.current) {
-      posRef.current += SPEED
-      // Once we've scrolled through one full copy, reset seamlessly
-      if (posRef.current >= TOTAL_ORIG) {
-        posRef.current -= TOTAL_ORIG
+    if (track1Ref.current && track2Ref.current) {
+      if (!paused1Ref.current) {
+        pos1Ref.current += SPEED
+        if (pos1Ref.current >= TOTAL_ORIG) pos1Ref.current -= TOTAL_ORIG
+        track1Ref.current.style.transform = `translateX(-${pos1Ref.current}px)`
       }
-      track1Ref.current.style.transform = `translateX(-${posRef.current}px)`
-      track2Ref.current.style.transform = `translateX(-${TOTAL_ORIG - posRef.current}px)`
+      
+      if (!paused2Ref.current) {
+        pos2Ref.current += SPEED
+        if (pos2Ref.current >= TOTAL_ORIG) pos2Ref.current -= TOTAL_ORIG
+        track2Ref.current.style.transform = `translateX(-${TOTAL_ORIG - pos2Ref.current}px)`
+      }
     }
     animRef.current = requestAnimationFrame(loop)
   }, [TOTAL_ORIG])
@@ -230,31 +236,47 @@ export default function EventsShowcase() {
     }
   }, [animate])
 
-  /* ── Pause on hover ── */
-  const handleMouseEnter = () => { pausedRef.current = true }
-  const handleMouseLeave = () => { pausedRef.current = false }
-
   /* ── Touch swipe ── */
-  const touchStartX = useRef(0)
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX
-    pausedRef.current = true
-  }
-  const handleTouchMove = (e: React.TouchEvent) => {
-    const dx = touchStartX.current - e.touches[0].clientX
-    posRef.current = posRef.current + dx * 0.6
-    
-    // Wrap manual scrolling smoothly
-    if (posRef.current >= TOTAL_ORIG) posRef.current -= TOTAL_ORIG
-    if (posRef.current < 0) posRef.current += TOTAL_ORIG
+  const touchStartX1 = useRef(0)
+  const touchStartX2 = useRef(0)
 
-    touchStartX.current = e.touches[0].clientX
-    if (track1Ref.current && track2Ref.current) {
-      track1Ref.current.style.transform = `translateX(-${posRef.current}px)`
-      track2Ref.current.style.transform = `translateX(-${TOTAL_ORIG - posRef.current}px)`
+  // Track 1 Handlers
+  const handleTouchStart1 = (e: React.TouchEvent) => {
+    touchStartX1.current = e.touches[0].clientX
+    paused1Ref.current = true
+  }
+  const handleTouchMove1 = (e: React.TouchEvent) => {
+    const dx = touchStartX1.current - e.touches[0].clientX
+    pos1Ref.current = pos1Ref.current + dx * 0.6
+    
+    if (pos1Ref.current >= TOTAL_ORIG) pos1Ref.current -= TOTAL_ORIG
+    if (pos1Ref.current < 0) pos1Ref.current += TOTAL_ORIG
+
+    touchStartX1.current = e.touches[0].clientX
+    if (track1Ref.current) {
+      track1Ref.current.style.transform = `translateX(-${pos1Ref.current}px)`
     }
   }
-  const handleTouchEnd = () => { pausedRef.current = false }
+  const handleTouchEnd1 = () => { paused1Ref.current = false }
+
+  // Track 2 Handlers
+  const handleTouchStart2 = (e: React.TouchEvent) => {
+    touchStartX2.current = e.touches[0].clientX
+    paused2Ref.current = true
+  }
+  const handleTouchMove2 = (e: React.TouchEvent) => {
+    const dx = touchStartX2.current - e.touches[0].clientX
+    pos2Ref.current = pos2Ref.current + dx * 0.6
+    
+    if (pos2Ref.current >= TOTAL_ORIG) pos2Ref.current -= TOTAL_ORIG
+    if (pos2Ref.current < 0) pos2Ref.current += TOTAL_ORIG
+
+    touchStartX2.current = e.touches[0].clientX
+    if (track2Ref.current) {
+      track2Ref.current.style.transform = `translateX(-${TOTAL_ORIG - pos2Ref.current}px)`
+    }
+  }
+  const handleTouchEnd2 = () => { paused2Ref.current = false }
 
   return (
     <section
@@ -298,15 +320,15 @@ export default function EventsShowcase() {
       {/* ── Carousel Container ── */}
       <div
         style={{ position: 'relative' }}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         {/* Track 1 (Moves Left) */}
         <div
           style={{ overflow: 'hidden', padding: '12px 0 10px' }}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          onMouseEnter={() => { paused1Ref.current = true }}
+          onMouseLeave={() => { paused1Ref.current = false }}
+          onTouchStart={handleTouchStart1}
+          onTouchMove={handleTouchMove1}
+          onTouchEnd={handleTouchEnd1}
         >
           <div
             ref={track1Ref}
@@ -326,9 +348,11 @@ export default function EventsShowcase() {
         {/* Track 2 (Moves Right) */}
         <div
           style={{ overflow: 'hidden', padding: '10px 0 20px' }}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          onMouseEnter={() => { paused2Ref.current = true }}
+          onMouseLeave={() => { paused2Ref.current = false }}
+          onTouchStart={handleTouchStart2}
+          onTouchMove={handleTouchMove2}
+          onTouchEnd={handleTouchEnd2}
         >
           <div
             ref={track2Ref}
