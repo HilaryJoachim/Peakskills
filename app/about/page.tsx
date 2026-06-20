@@ -163,7 +163,7 @@ export default function AboutPage() {
             <div className="absolute top-0 left-0 w-[55%] h-[45%] rounded-2xl overflow-hidden border-4 border-[#1D2430] z-10 shadow-xl">
               <div 
                 className="w-full h-full bg-cover bg-center"
-                style={{ backgroundImage: 'url(/about_team_1.png)' }}
+                style={{ backgroundImage: 'url(/about_team_1a.jpeg)' }}
               />
               <div className="absolute top-0 right-0 bg-[#4DD0E1] text-[#1D2430] text-[11px] md:text-xs font-bold px-3 py-1.5 rounded-bl-lg">Core Facilitators</div>
             </div>
@@ -172,7 +172,7 @@ export default function AboutPage() {
             <div className="absolute top-[20%] right-0 w-[60%] h-[45%] rounded-2xl overflow-hidden border-4 border-[#1D2430] z-20 shadow-2xl">
               <div 
                 className="w-full h-full bg-cover bg-center"
-                style={{ backgroundImage: 'url(/about_team_2.png)' }}
+                style={{ backgroundImage: 'url(/about_team2a.jpeg)' }}
               />
               <div className="absolute top-0 right-0 bg-[#FFB300] text-[#1D2430] text-[11px] md:text-xs font-bold px-3 py-1.5 rounded-bl-lg">Consulting Team</div>
             </div>
@@ -180,8 +180,8 @@ export default function AboutPage() {
             {/* Bottom Left Image */}
             <div className="absolute bottom-0 left-[10%] w-[65%] h-[40%] rounded-2xl overflow-hidden border-4 border-[#1D2430] z-30 shadow-xl">
               <div 
-                className="w-full h-full bg-cover bg-center"
-                style={{ backgroundImage: 'url(/about_team_3.png)' }}
+                className="w-full h-full bg-cover bg-top"
+                style={{ backgroundImage: 'url(/about_team3a.jpeg)' }}
               />
               <div className="absolute top-0 right-0 bg-[#4DD0E1] text-[#1D2430] text-[11px] md:text-xs font-bold px-3 py-1.5 rounded-bl-lg">Executive Coaches</div>
             </div>

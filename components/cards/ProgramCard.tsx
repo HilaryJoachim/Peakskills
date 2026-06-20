@@ -75,7 +75,17 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
 
   const status = STATUS_CONFIG[statusKey]
 
+  const COURSE_IMAGES: Record<string, string> = {
+    'banking-operations-regulatory-compliance': '/courses/Banking Operations & Regulatory Compliance.jpeg',
+    'career-readiness-for-youth': '/courses/Career Readiness for Youth.jpeg',
+    'customer-service-excellence': '/courses/Customer Service Excellence.jpeg',
+    'leadership-excellence-program': '/courses/Leadership Excellence Program.jpeg',
+    'professional-ethics-workplace-conduct': '/courses/Professional Ethics & Workplace Conduct.jpeg',
+    'project-management-fundamentals': '/courses/Project Management Fundamentals.jpeg'
+  }
+
   const imageUrl =
+    COURSE_IMAGES[program.slug] ||
     program.card_image_url ||
     program.hero_image_url ||
     `https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=640&q=80&auto=format&fit=crop`

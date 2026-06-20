@@ -45,14 +45,14 @@ export default function ContactForm() {
             <div className="flex flex-col gap-6">
               <div 
                 className="flex items-start gap-4"
-                style={{ background: '#FFB300', padding: '24px', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
+                style={{ padding: '8px 0' }}
               >
-                <div style={{ background: '#FFFFFF', color: '#1D2430', padding: '14px', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ background: 'rgba(255,255,255,0.1)', color: '#4DD0E1', padding: '14px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <MapPin size={24} />
                 </div>
                 <div>
-                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '18px', fontWeight: 800, color: '#1D2430', marginBottom: '6px' }}>Our Office</h4>
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'rgba(29,36,48,0.85)', lineHeight: 1.6, fontWeight: 500 }}>
+                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '18px', fontWeight: 800, color: '#FFFFFF', marginBottom: '6px' }}>Our Office</h4>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.6, fontWeight: 500 }}>
                     7th Floor, ABC Building<br />
                     Ali Hassan Mwinyi Road<br />
                     Dar es Salaam, Tanzania
@@ -62,14 +62,14 @@ export default function ContactForm() {
 
               <div 
                 className="flex items-start gap-4"
-                style={{ background: '#4DD0E1', padding: '24px', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
+                style={{ padding: '8px 0' }}
               >
-                <div style={{ background: '#FFFFFF', color: '#1D2430', padding: '14px', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ background: 'rgba(255,255,255,0.1)', color: '#4DD0E1', padding: '14px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Phone size={24} />
                 </div>
                 <div>
-                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '18px', fontWeight: 800, color: '#1D2430', marginBottom: '6px' }}>Phone Number</h4>
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'rgba(29,36,48,0.85)', lineHeight: 1.6, fontWeight: 500 }}>
+                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '18px', fontWeight: 800, color: '#FFFFFF', marginBottom: '6px' }}>Phone Number</h4>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.6, fontWeight: 500 }}>
                     +255 700 000 000<br />
                     +255 700 000 001
                   </p>
@@ -78,14 +78,14 @@ export default function ContactForm() {
 
               <div 
                 className="flex items-start gap-4"
-                style={{ background: '#FFB300', padding: '24px', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}
+                style={{ padding: '8px 0' }}
               >
-                <div style={{ background: '#FFFFFF', color: '#1D2430', padding: '14px', borderRadius: '16px', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ background: 'rgba(255,255,255,0.1)', color: '#4DD0E1', padding: '14px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Mail size={24} />
                 </div>
                 <div>
-                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '18px', fontWeight: 800, color: '#1D2430', marginBottom: '6px' }}>Email Address</h4>
-                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'rgba(29,36,48,0.85)', lineHeight: 1.6, fontWeight: 500 }}>
+                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '18px', fontWeight: 800, color: '#FFFFFF', marginBottom: '6px' }}>Email Address</h4>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.6, fontWeight: 500 }}>
                     info@peakskills.co.tz<br />
                     training@peakskills.co.tz
                   </p>

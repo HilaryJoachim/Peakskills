@@ -17,10 +17,10 @@ export default function SubscribeBand() {
 
   return (
     <section style={{ background: '#009B91', padding: '40px 24px' }}>
-      <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '48px', flexWrap: 'wrap' }}>
+      <div style={{ maxWidth: '700px', margin: '0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '24px' }}>
 
-        {/* Left — title + description */}
-        <div style={{ flex: '1 1 280px' }}>
+        {/* Top — title + description */}
+        <div style={{ width: '100%' }}>
           <h2 style={{
             fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700,
             fontSize: 'clamp(28px, 4vw, 36px)', color: '#ffffff',
@@ -37,8 +37,8 @@ export default function SubscribeBand() {
           </p>
         </div>
 
-        {/* Right — form */}
-        <div style={{ flex: '1 1 320px' }}>
+        {/* Bottom — form */}
+        <div style={{ width: '100%', maxWidth: '480px' }}>
           {status === 'success' ? (
             <div style={{
               background: '#fff', borderRadius: '8px', padding: '14px 20px',
@@ -90,7 +90,7 @@ export default function SubscribeBand() {
                   {status === 'loading' ? 'Subscribing…' : 'Subscribe'}
                 </button>
               </form>
-              <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginTop: '12px' }}>
+              <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '14px', color: 'rgba(255,255,255,0.65)', marginTop: '16px', marginBottom: 0 }}>
                 No spam — just useful updates, a few times a month.
               </p>
             </>

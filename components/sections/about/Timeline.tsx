@@ -160,7 +160,7 @@ export default function Timeline() {
     { 
       year: '2023', side: 'left', theme: 'primary', nodeActive: false,
       content: 'Recognized as a leading corporate training partner by top-tier financial institutions in Tanzania.',
-      imageSrc: '/about_timeline.png' 
+      imageSrc: '/about_timeline1.jpeg' 
     },
     { 
       year: '2024', side: 'left', theme: 'secondary', nodeActive: true,

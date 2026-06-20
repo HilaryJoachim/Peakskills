@@ -122,13 +122,7 @@ export default function Footer() {
           <p style={{ fontSize: '13px', color: '#A9B4C2', margin: 0 }}>
             © {year} PeakSkills. All rights reserved.
           </p>
-          <div style={{ display: 'flex', gap: '24px' }}>
-            {[
-              { label: 'Verify Certificate', href: '/verify-certificate' },
-            ].map((l) => (
-              <Link key={l.href} href={l.href} style={{ fontSize: '13px', color: '#A9B4C2', textDecoration: 'none' }}>{l.label}</Link>
-            ))}
-          </div>
+
         </div>
       </div>
       <style>{`

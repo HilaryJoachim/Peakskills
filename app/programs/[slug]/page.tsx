@@ -59,7 +59,16 @@ export default async function ProgramDetailPage({ params }: Props) {
     .filter(p => p.id !== program.id && p.category_id === program.category_id)
     .slice(0, 3)
 
-  const imageUrl = program.hero_image_url ||
+  const COURSE_IMAGES: Record<string, string> = {
+    'banking-operations-regulatory-compliance': '/courses/Banking Operations & Regulatory Compliance.jpeg',
+    'career-readiness-for-youth': '/courses/Career Readiness for Youth.jpeg',
+    'customer-service-excellence': '/courses/Customer Service Excellence.jpeg',
+    'leadership-excellence-program': '/courses/Leadership Excellence Program.jpeg',
+    'professional-ethics-workplace-conduct': '/courses/Professional Ethics & Workplace Conduct.jpeg',
+    'project-management-fundamentals': '/courses/Project Management Fundamentals.jpeg'
+  }
+
+  const imageUrl = COURSE_IMAGES[program.slug] || program.hero_image_url ||
     'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1200&q=85&auto=format&fit=crop'
 
   const FORMAT_LABELS: Record<string, string> = {

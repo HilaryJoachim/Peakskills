@@ -4,76 +4,113 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 // Link & AnimatedCounter removed — CTA and stats strip no longer displayed
 
 /* ─── Data ──────────────────────────────────────────────── */
-const EVENTS = [
+const TOP_EVENTS = [
   {
     id: 1,
     title: 'Leadership Summit 2025',
     location: 'Dar es Salaam, Tanzania',
     year: '2025',
-    image: '/events/leadership-summit.jpg',
-    alt: 'PeakSkills Leadership Summit 2025 — professionals gathered at a conference in Dar es Salaam',
+    image: '/events/leadership-sumit.jpeg',
+    alt: 'PeakSkills Leadership Summit 2025',
     tag: 'Summit',
   },
   {
     id: 2,
-    title: 'Customer Service Excellence Workshop',
-    location: 'Arusha, Tanzania',
-    year: '2024',
-    image: '/events/customer-service-workshop.jpg',
-    alt: 'Customer Service Excellence Workshop facilitated by PeakSkills in Arusha',
-    tag: 'Workshop',
-  },
-  {
-    id: 3,
     title: 'Banking Leadership Conference',
     location: 'Dodoma, Tanzania',
     year: '2025',
-    image: '/events/banking-conference.jpg',
-    alt: 'Banking Leadership Conference — East African banking executives in Dodoma',
+    image: '/events/banking-conference1.jpeg',
+    alt: 'Banking Leadership Conference',
     tag: 'Conference',
   },
   {
-    id: 4,
+    id: 3,
     title: 'Public Sector Governance Seminar',
     location: 'Nairobi, Kenya',
     year: '2024',
-    image: '/events/government-seminar.jpg',
-    alt: 'Public Sector Governance Seminar for government officials in Nairobi',
+    image: '/events/goverment-seminer1.jpeg',
+    alt: 'Public Sector Governance Seminar',
     tag: 'Seminar',
   },
   {
-    id: 5,
-    title: 'NGO Capacity Building Program',
-    location: 'Mwanza, Tanzania',
-    year: '2025',
-    image: '/events/ngo-training.jpg',
-    alt: 'NGO Capacity Building Program — collaborative training workshop in Mwanza',
-    tag: 'Program',
-  },
-  {
-    id: 6,
+    id: 4,
     title: 'HR Masterclass Series',
     location: 'Dar es Salaam, Tanzania',
     year: '2024',
-    image: '/events/hr-masterclass.jpg',
-    alt: 'Human Resources Masterclass Series facilitated by PeakSkills',
+    image: '/events/hr-masterclass1.jpeg',
+    alt: 'Human Resources Masterclass Series',
     tag: 'Masterclass',
+  },
+]
+
+const BOTTOM_EVENTS = [
+  {
+    id: 5,
+    title: 'Customer Service Excellence Workshop',
+    location: 'Arusha, Tanzania',
+    year: '2024',
+    image: '/events/cl21.jpeg',
+    alt: 'Customer Service Excellence',
+    tag: 'Workshop',
+  },
+  {
+    id: 6,
+    title: 'NGO Capacity Building Program',
+    location: 'Mwanza, Tanzania',
+    year: '2025',
+    image: '/events/cl22.jpeg',
+    alt: 'NGO Capacity Building',
+    tag: 'Program',
   },
   {
     id: 7,
     title: 'Corporate Leadership Retreat',
     location: 'Zanzibar, Tanzania',
     year: '2025',
-    image: '/events/corporate-retreat.jpg',
-    alt: 'Corporate Leadership Retreat in Zanzibar — team building and executive development',
+    image: '/events/cl23.jpeg',
+    alt: 'Corporate Leadership Retreat',
     tag: 'Retreat',
+  },
+  {
+    id: 8,
+    title: 'Strategic Planning Masterclass',
+    location: 'Kigali, Rwanda',
+    year: '2024',
+    image: '/events/cl24.jpeg',
+    alt: 'Strategic Planning Masterclass',
+    tag: 'Strategy',
+  },
+  {
+    id: 9,
+    title: 'Team Collaboration Session',
+    location: 'Dar es Salaam, Tanzania',
+    year: '2024',
+    image: '/events/cl25.jpeg',
+    alt: 'Team Collaboration Session',
+    tag: 'Team Building',
+  },
+  {
+    id: 10,
+    title: 'Executive Development Workshop',
+    location: 'Entebbe, Uganda',
+    year: '2025',
+    image: '/events/cl26.jpeg',
+    alt: 'Executive Development Workshop',
+    tag: 'Executive',
+  },
+  {
+    id: 11,
+    title: 'Financial Management Seminar',
+    location: 'Dodoma, Tanzania',
+    year: '2024',
+    image: '/events/cl27.jpeg',
+    alt: 'Financial Management Seminar',
+    tag: 'Finance',
   },
 ]
 
-
-
 /* ─── Card ───────────────────────────────────────────────── */
-function EventCard({ event }: { event: typeof EVENTS[0] }) {
+function EventCard({ event }: { event: any }) {
   const [hovered, setHovered] = useState(false)
 
   return (
@@ -197,14 +234,15 @@ export default function EventsShowcase() {
   const paused2Ref = useRef(false)
 
   // Duplicate cards for seamless infinite loop
-  const DOUBLED1 = [...EVENTS, ...EVENTS, ...EVENTS]
-  const DOUBLED2 = [...EVENTS].reverse()
-  const DOUBLED2_FULL = [...DOUBLED2, ...DOUBLED2, ...DOUBLED2]
+  const DOUBLED1 = [...TOP_EVENTS, ...TOP_EVENTS, ...TOP_EVENTS, ...TOP_EVENTS]
+  const DOUBLED2 = [...BOTTOM_EVENTS].reverse()
+  const DOUBLED2_FULL = [...DOUBLED2, ...DOUBLED2, ...DOUBLED2, ...DOUBLED2]
 
   const CARD_WIDTH = 320
   const CARD_GAP   = 20
   const ITEM_W     = CARD_WIDTH + CARD_GAP
-  const TOTAL_ORIG = EVENTS.length * ITEM_W  // width of one set
+  const TOTAL_ORIG1 = TOP_EVENTS.length * ITEM_W  // width of top set
+  const TOTAL_ORIG2 = BOTTOM_EVENTS.length * ITEM_W  // width of bottom set
 
   const SPEED = 0.8 // px per frame
 
@@ -213,18 +251,18 @@ export default function EventsShowcase() {
     if (track1Ref.current && track2Ref.current) {
       if (!paused1Ref.current) {
         pos1Ref.current += SPEED
-        if (pos1Ref.current >= TOTAL_ORIG) pos1Ref.current -= TOTAL_ORIG
+        if (pos1Ref.current >= TOTAL_ORIG1) pos1Ref.current -= TOTAL_ORIG1
         track1Ref.current.style.transform = `translateX(-${pos1Ref.current}px)`
       }
       
       if (!paused2Ref.current) {
         pos2Ref.current += SPEED
-        if (pos2Ref.current >= TOTAL_ORIG) pos2Ref.current -= TOTAL_ORIG
-        track2Ref.current.style.transform = `translateX(-${TOTAL_ORIG - pos2Ref.current}px)`
+        if (pos2Ref.current >= TOTAL_ORIG2) pos2Ref.current -= TOTAL_ORIG2
+        track2Ref.current.style.transform = `translateX(-${TOTAL_ORIG2 - pos2Ref.current}px)`
       }
     }
     animRef.current = requestAnimationFrame(loop)
-  }, [TOTAL_ORIG])
+  }, [TOTAL_ORIG1, TOTAL_ORIG2])
 
   useEffect(() => {
     // Respect prefers-reduced-motion
@@ -249,8 +287,8 @@ export default function EventsShowcase() {
     const dx = touchStartX1.current - e.touches[0].clientX
     pos1Ref.current = pos1Ref.current + dx * 0.6
     
-    if (pos1Ref.current >= TOTAL_ORIG) pos1Ref.current -= TOTAL_ORIG
-    if (pos1Ref.current < 0) pos1Ref.current += TOTAL_ORIG
+    if (pos1Ref.current >= TOTAL_ORIG1) pos1Ref.current -= TOTAL_ORIG1
+    if (pos1Ref.current < 0) pos1Ref.current += TOTAL_ORIG1
 
     touchStartX1.current = e.touches[0].clientX
     if (track1Ref.current) {
@@ -268,12 +306,12 @@ export default function EventsShowcase() {
     const dx = touchStartX2.current - e.touches[0].clientX
     pos2Ref.current = pos2Ref.current + dx * 0.6
     
-    if (pos2Ref.current >= TOTAL_ORIG) pos2Ref.current -= TOTAL_ORIG
-    if (pos2Ref.current < 0) pos2Ref.current += TOTAL_ORIG
+    if (pos2Ref.current >= TOTAL_ORIG2) pos2Ref.current -= TOTAL_ORIG2
+    if (pos2Ref.current < 0) pos2Ref.current += TOTAL_ORIG2
 
     touchStartX2.current = e.touches[0].clientX
     if (track2Ref.current) {
-      track2Ref.current.style.transform = `translateX(-${TOTAL_ORIG - pos2Ref.current}px)`
+      track2Ref.current.style.transform = `translateX(-${TOTAL_ORIG2 - pos2Ref.current}px)`
     }
   }
   const handleTouchEnd2 = () => { paused2Ref.current = false }

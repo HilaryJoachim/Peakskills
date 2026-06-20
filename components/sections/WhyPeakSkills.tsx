@@ -16,7 +16,7 @@ export default function WhyPeakSkills() {
           {/* ── Left: single large image ─────────────────── */}
           <div style={{ borderRadius: '12px', overflow: 'hidden', aspectRatio: '4 / 5', boxShadow: '0 16px 48px rgba(0,0,0,0.12)' }}>
             <img
-              src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&q=85&auto=format&fit=crop"
+              src="/about_peak2.jpeg"
               alt="PeakSkills facilitator leading a professional training session"
               loading="lazy"
               style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}

@@ -34,7 +34,7 @@ export default function ServicesPage() {
           industries={['Banking', 'Government', 'Manufacturing', 'NGOs', 'Education', 'Corporate Organizations']}
           ctaLabel="View Training Programs"
           ctaHref="/programs"
-          imageSrc="/services/training.png"
+          imageSrc="/services/training1.jpeg"
           imageAlt="Interactive corporate training session"
           imagePosition="left"
         />
@@ -54,7 +54,7 @@ export default function ServicesPage() {
           ]}
           ctaLabel="Book a Consultation"
           ctaHref="/contact"
-          imageSrc="/services/consulting.png"
+          imageSrc="/services/training2.jpeg"
           imageAlt="Business executives analyzing strategy"
           imagePosition="right"
         />
@@ -74,7 +74,7 @@ export default function ServicesPage() {
           ]}
           ctaLabel="Join a Mentorship Program"
           ctaHref="/programs"
-          imageSrc="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1200&auto=format&fit=crop"
+          imageSrc="/services/training3.jpeg"
           imageAlt="Senior leader mentoring a young professional"
           imagePosition="left"
         />
@@ -94,7 +94,7 @@ export default function ServicesPage() {
           ]}
           ctaLabel="Discuss Your Brand"
           ctaHref="/contact"
-          imageSrc="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop"
+          imageSrc="/services/training4.jpeg"
           imageAlt="Creative professionals working on branding"
           imagePosition="right"
         />
