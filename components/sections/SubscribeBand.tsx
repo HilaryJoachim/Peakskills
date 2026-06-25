@@ -64,7 +64,7 @@ export default function SubscribeBand() {
             <>
               <form
                 onSubmit={handleSubmit}
-                style={{ display: 'flex', gap: '8px' }}
+                style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
               >
                 <label htmlFor="subscribe-email" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
                   Email address
@@ -89,6 +89,7 @@ export default function SubscribeBand() {
                   type="submit"
                   disabled={status === 'loading'}
                   style={{
+                    width: '100%',
                     background: '#1D2430', color: '#fff',
                     padding: '12px 26px', borderRadius: '6px', border: 'none',
                     fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '16px',
