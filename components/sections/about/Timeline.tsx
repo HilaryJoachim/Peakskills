@@ -84,12 +84,6 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ year, side, theme, content,
               {/* Arrow pointing to center */}
               <div className={`hidden md:block absolute top-1/2 -translate-y-1/2 -right-4 w-0 h-0 border-t-[16px] border-t-transparent border-b-[16px] border-b-transparent border-l-[16px] ${styles.arrowRight}`} />
             </div>
-            
-            {imageSrc && (
-              <div className="mt-6 rounded-lg overflow-hidden shadow-lg w-full h-[200px] relative">
-                <Image src={imageSrc} alt={`Timeline ${year}`} fill className="object-cover" />
-              </div>
-            )}
           </div>
         )}
         
@@ -172,7 +166,8 @@ export default function Timeline() {
     },
     { 
       year: '2025', side: 'left', theme: 'secondary', nodeActive: false,
-      content: 'Successfully executed 100+ turnkey training projects across government and private sectors.' 
+      content: 'Successfully executed 100+ training projects across government and private sectors.',
+      imageSrc: '/about_timeline2.jpeg'
     },
     { 
       year: '2026', side: 'right', theme: 'primary', nodeActive: true,

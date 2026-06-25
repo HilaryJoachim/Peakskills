@@ -99,11 +99,22 @@ export default function RegisterForm({ initialProgramName = '', initialSessionDa
     e.preventDefault()
     if (!validate()) return
     setStatus('loading')
-    // Simulate API call
-    await new Promise(r => setTimeout(r, 1200))
-    // Generate random reference
-    setReference(`PS-REG-${Math.floor(1000 + Math.random() * 9000)}`)
-    setStatus('success')
+    try {
+      await fetch('https://formsubmit.co/ajax/kimsako22@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: `Event Registration from ${form.fullName}`,
+          ...form
+        })
+      })
+      setReference(`PS-REG-${Math.floor(1000 + Math.random() * 9000)}`)
+      setStatus('success')
+    } catch (error) {
+      console.error(error)
+      setStatus('idle')
+      alert("Failed to submit registration. Please try again.")
+    }
   }
 
   if (status === 'success') {

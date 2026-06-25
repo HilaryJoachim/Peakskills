@@ -70,8 +70,8 @@ export default function ContactForm() {
                 <div>
                   <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', fontSize: '18px', fontWeight: 800, color: '#FFFFFF', marginBottom: '6px' }}>Phone Number</h4>
                   <p style={{ fontFamily: 'var(--font-body)', fontSize: '15px', color: 'rgba(255,255,255,0.85)', lineHeight: 1.6, fontWeight: 500 }}>
-                    +255 700 000 000<br />
-                    +255 700 000 001
+                    +255 754 232 863<br />
+                    0718 710 361
                   </p>
                 </div>
               </div>
@@ -110,22 +110,48 @@ export default function ContactForm() {
                 Send us a message
               </h3>
               
-              <form className="flex flex-col gap-6" onSubmit={(e) => e.preventDefault()}>
+              <form className="flex flex-col gap-6" onSubmit={async (e) => {
+                  e.preventDefault();
+                  const form = e.target as HTMLFormElement;
+                  const formData = new FormData(form);
+                  const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+                  const originalText = submitBtn.innerText;
+                  submitBtn.disabled = true;
+                  submitBtn.innerText = 'Sending...';
+                  try {
+                    await fetch('https://formsubmit.co/ajax/kimsako22@gmail.com', {
+                      method: 'POST',
+                      headers: { 'Accept': 'application/json' },
+                      body: formData
+                    });
+                    form.reset();
+                    alert('Message sent successfully!');
+                  } catch (err) {
+                    alert('Failed to send message.');
+                  } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = originalText;
+                  }
+                }}>
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="flex-1 flex flex-col gap-2">
                     <label style={{ fontFamily: 'var(--font-body)', fontSize: '14px', fontWeight: 600, color: '#1D2430' }}>First Name <span className="text-red-500">*</span></label>
                     <input 
                       type="text" 
+                      name="firstName"
                       placeholder="John"
                       className="w-full bg-[#F8FAFC] border border-[#DDE4EC] rounded-lg px-4 py-3 text-[#1D2430] font-[var(--font-body)] focus:outline-none focus:border-[#0077B6] focus:ring-1 focus:ring-[#0077B6] transition-all"
+                      required
                     />
                   </div>
                   <div className="flex-1 flex flex-col gap-2">
                     <label style={{ fontFamily: 'var(--font-body)', fontSize: '14px', fontWeight: 600, color: '#1D2430' }}>Last Name <span className="text-red-500">*</span></label>
                     <input 
                       type="text" 
+                      name="lastName"
                       placeholder="Doe"
                       className="w-full bg-[#F8FAFC] border border-[#DDE4EC] rounded-lg px-4 py-3 text-[#1D2430] font-[var(--font-body)] focus:outline-none focus:border-[#0077B6] focus:ring-1 focus:ring-[#0077B6] transition-all"
+                      required
                     />
                   </div>
                 </div>
@@ -135,14 +161,17 @@ export default function ContactForm() {
                     <label style={{ fontFamily: 'var(--font-body)', fontSize: '14px', fontWeight: 600, color: '#1D2430' }}>Email Address <span className="text-red-500">*</span></label>
                     <input 
                       type="email" 
+                      name="email"
                       placeholder="john@company.com"
                       className="w-full bg-[#F8FAFC] border border-[#DDE4EC] rounded-lg px-4 py-3 text-[#1D2430] font-[var(--font-body)] focus:outline-none focus:border-[#0077B6] focus:ring-1 focus:ring-[#0077B6] transition-all"
+                      required
                     />
                   </div>
                   <div className="flex-1 flex flex-col gap-2">
                     <label style={{ fontFamily: 'var(--font-body)', fontSize: '14px', fontWeight: 600, color: '#1D2430' }}>Phone Number</label>
                     <input 
                       type="tel" 
+                      name="phone"
                       placeholder="+255 XXX XXX XXX"
                       className="w-full bg-[#F8FAFC] border border-[#DDE4EC] rounded-lg px-4 py-3 text-[#1D2430] font-[var(--font-body)] focus:outline-none focus:border-[#0077B6] focus:ring-1 focus:ring-[#0077B6] transition-all"
                     />
@@ -153,6 +182,7 @@ export default function ContactForm() {
                   <label style={{ fontFamily: 'var(--font-body)', fontSize: '14px', fontWeight: 600, color: '#1D2430' }}>Company / Organization</label>
                   <input 
                     type="text" 
+                    name="company"
                     placeholder="Your Company Name"
                     className="w-full bg-[#F8FAFC] border border-[#DDE4EC] rounded-lg px-4 py-3 text-[#1D2430] font-[var(--font-body)] focus:outline-none focus:border-[#0077B6] focus:ring-1 focus:ring-[#0077B6] transition-all"
                   />
@@ -160,7 +190,7 @@ export default function ContactForm() {
 
                 <div className="flex flex-col gap-2">
                   <label style={{ fontFamily: 'var(--font-body)', fontSize: '14px', fontWeight: 600, color: '#1D2430' }}>Subject</label>
-                  <select className="w-full bg-[#F8FAFC] border border-[#DDE4EC] rounded-lg px-4 py-3 text-[#1D2430] font-[var(--font-body)] focus:outline-none focus:border-[#0077B6] focus:ring-1 focus:ring-[#0077B6] transition-all appearance-none">
+                  <select name="subject" className="w-full bg-[#F8FAFC] border border-[#DDE4EC] rounded-lg px-4 py-3 text-[#1D2430] font-[var(--font-body)] focus:outline-none focus:border-[#0077B6] focus:ring-1 focus:ring-[#0077B6] transition-all appearance-none">
                     <option value="">Select a topic...</option>
                     <option value="training">Corporate Training Inquiry</option>
                     <option value="consulting">Consulting Services</option>
@@ -172,9 +202,11 @@ export default function ContactForm() {
                 <div className="flex flex-col gap-2">
                   <label style={{ fontFamily: 'var(--font-body)', fontSize: '14px', fontWeight: 600, color: '#1D2430' }}>Message <span className="text-red-500">*</span></label>
                   <textarea 
+                    name="message"
                     rows={5}
                     placeholder="How can we help you?"
                     className="w-full bg-[#F8FAFC] border border-[#DDE4EC] rounded-lg px-4 py-3 text-[#1D2430] font-[var(--font-body)] focus:outline-none focus:border-[#0077B6] focus:ring-1 focus:ring-[#0077B6] transition-all resize-none"
+                    required
                   ></textarea>
                 </div>
 

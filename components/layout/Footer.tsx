@@ -104,7 +104,7 @@ export default function Footer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {[
               { icon: <MapPin size={16} />, text: 'Dar es Salaam, Tanzania' },
-              { icon: <Phone size={16} />, text: '+255 700 000 000' },
+              { icon: <Phone size={16} />, text: '+255 754 232 863 / 0718 710 361' },
               { icon: <Mail size={16} />, text: 'info@peakskills.co.tz' },
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '14px', color: '#A9B4C2' }}>

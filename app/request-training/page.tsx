@@ -74,7 +74,7 @@ export default function RequestTrainingPage() {
                   Prefer to speak directly?
                 </h3>
                 {[
-                  { icon: <Phone size={16} />, label: '+255 700 000 000' },
+                  { icon: <Phone size={16} />, label: '+255 754 232 863 / 0718 710 361' },
                   { icon: <Mail size={16} />, label: 'training@peakskills.co.tz' },
                   { icon: <Clock size={16} />, label: 'Mon–Fri, 8:00am–5:00pm EAT' },
                 ].map((item, i) => (

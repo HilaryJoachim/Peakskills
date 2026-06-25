@@ -86,8 +86,21 @@ export default function RequestTrainingForm() {
     e.preventDefault()
     if (!validate()) return
     setStatus('loading')
-    await new Promise(r => setTimeout(r, 1200))
-    setStatus('success')
+    try {
+      await fetch('https://formsubmit.co/ajax/kimsako22@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: `Training Request from ${form.organizationName}`,
+          ...form
+        })
+      })
+      setStatus('success')
+    } catch (error) {
+      console.error(error)
+      setStatus('idle')
+      alert("Failed to send request. Please try again.")
+    }
   }
 
   if (status === 'success') {

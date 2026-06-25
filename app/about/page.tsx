@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { Target, BookOpen, Award, Lightbulb, LineChart, Users } from 'lucide-react'
+import { Target, BookOpen, Award, Lightbulb, LineChart, Users, Scale } from 'lucide-react'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import Timeline from '@/components/sections/about/Timeline'
@@ -72,13 +72,13 @@ export default function AboutPage() {
             , one professional at a time
           </h1>
           <p style={{ fontFamily: 'Arial, sans-serif', fontSize: '17px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.85, marginBottom: '20px', fontWeight: 400 }}>
-            Each year, organizations face the growing challenge of finding talent equipped with the practical, hands-on skills necessary to thrive in a competitive landscape. Bridging the gap between theoretical knowledge and workplace execution is one of the biggest priorities for modern businesses.
+            PeakSkills is a professional training and business consultancy firm headquartered in Arusha with branches in Kilimanjaro and Manyara. We partner with organizations to develop practical workplace skills, strengthen leadership, improve customer service, and increase organizational performance.
           </p>
           <p style={{ fontFamily: 'Arial, sans-serif', fontSize: '17px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.85, marginBottom: '20px', fontWeight: 400 }}>
-            With industry-leading methodologies, PeakSkills has become the premier partner for comprehensive corporate training — providing turnkey solutions to upskill workforces with measurable outcomes.
+            Rather than delivering theoretical training, we focus on practical, industry-relevant learning that organizations can immediately apply in the workplace.
           </p>
           <p style={{ fontFamily: 'Arial, sans-serif', fontSize: '17px', color: 'rgba(255,255,255,0.72)', lineHeight: 1.85, fontWeight: 400 }}>
-            Our consulting methodology exemplifies a harmonious blend of strategic insight, actionable learning, and measurable business outcomes.
+            Our clients include government institutions, NGOs, manufacturing companies, educational institutions, healthcare organizations, hospitality businesses, and private companies throughout Tanzania and East Africa.
           </p>
         </div>
       </section>
@@ -136,7 +136,7 @@ export default function AboutPage() {
               marginBottom: '16px' 
             }}
           >
-            Our Mission
+            Vision & Mission
           </h3>
           
           <p 
@@ -148,7 +148,7 @@ export default function AboutPage() {
               fontWeight: 500
             }}
           >
-            To offer world-class training solutions that empower individuals and organizations to achieve peak performance, foster leadership, and drive sustainable business growth.
+            Our mission is to empower individuals and organizations through comprehensive training and consultancy services, fostering a culture of continuous improvement and efficiency. We envision a workforce equipped with the necessary skills to thrive in today's dynamic business environment, ultimately contributing to societal development.
           </p>
         </div>
       </section>
@@ -202,47 +202,60 @@ export default function AboutPage() {
               We are a leading provider of comprehensive learning and development solutions. Our customized programs replace generic training with highly tailored, industry-specific curriculum. Unlike many alternatives in the market, our solutions stand out by being intensely practical, ensuring measurable outcomes and sustained growth for both individuals and organizations.
             </p>
 
-            <h3 style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF' }} className="text-2xl font-bold mb-8">Our Key Differentiators</h3>
+            <h3 style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF' }} className="text-2xl font-bold mb-4">Our Core Values</h3>
+            <p className="text-gray-300 text-[16px] leading-relaxed mb-8 font-[var(--font-body)]">
+              Our core values serve as the foundation of our operations:
+            </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-8">
               
-              {/* Differentiator 1 */}
+              {/* Value 1 */}
               <div className="flex items-start gap-4 pb-6 border-b border-gray-700">
                 <div className="p-3 bg-[rgba(77,208,225,0.1)] rounded-xl text-[#4DD0E1]">
-                  <Award size={26} />
+                  <BookOpen size={26} />
                 </div>
                 <div>
-                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF' }} className="font-bold text-lg mb-1">Industry-Leading Expertise</h4>
+                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF' }} className="font-bold text-lg mb-1">1. Self-development</h4>
                 </div>
               </div>
 
-              {/* Differentiator 2 */}
+              {/* Value 2 */}
               <div className="flex items-start gap-4 pb-6 border-b border-gray-700">
                 <div className="p-3 bg-[rgba(77,208,225,0.1)] rounded-xl text-[#4DD0E1]">
                   <Lightbulb size={26} />
                 </div>
                 <div>
-                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF' }} className="font-bold text-lg mb-1">Innovative Methodology</h4>
+                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF' }} className="font-bold text-lg mb-1">2. Creativeness</h4>
                 </div>
               </div>
 
-              {/* Differentiator 3 */}
+              {/* Value 3 */}
+              <div className="flex items-start gap-4 pb-6 border-b border-gray-700">
+                <div className="p-3 bg-[rgba(77,208,225,0.1)] rounded-xl text-[#4DD0E1]">
+                  <Users size={26} />
+                </div>
+                <div>
+                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF' }} className="font-bold text-lg mb-1">3. Customer focus</h4>
+                </div>
+              </div>
+
+              {/* Value 4 */}
               <div className="flex items-start gap-4 pb-6 border-b border-gray-700 sm:border-b-0">
                 <div className="p-3 bg-[rgba(77,208,225,0.1)] rounded-xl text-[#4DD0E1]">
                   <LineChart size={26} />
                 </div>
                 <div>
-                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF' }} className="font-bold text-lg mb-1">Measurable Impact</h4>
+                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF' }} className="font-bold text-lg mb-1">4. Profitability</h4>
                 </div>
               </div>
 
-              {/* Differentiator 4 */}
+              {/* Value 5 */}
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-[rgba(77,208,225,0.1)] rounded-xl text-[#4DD0E1]">
-                  <Users size={26} />
+                  <Scale size={26} />
                 </div>
                 <div>
-                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF' }} className="font-bold text-lg mb-1">Ongoing Support & Mentorship</h4>
+                  <h4 style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF' }} className="font-bold text-lg mb-1">5. Harmonization</h4>
                 </div>
               </div>
 

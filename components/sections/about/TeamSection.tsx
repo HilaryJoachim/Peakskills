@@ -1,284 +1,197 @@
 'use client'
 
-import React, { useState } from 'react'
-import Image from 'next/image'
-import { ExternalLink, ArrowUpRight } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { X } from 'lucide-react'
+
+// Custom LinkedIn SVG Icon
+const LinkedinIcon = ({ size = 24, fill = "currentColor", className = "" }) => (
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill={fill}
+    className={className}
+  >
+    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+  </svg>
+)
+
+// Placeholder for missing images
+const PlaceholderAvatar = () => (
+  <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center text-gray-400">
+    <svg className="w-1/2 h-1/2" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+    </svg>
+  </div>
+)
 
 interface TeamMember {
   name: string
   title: string
-  subtitle: string
   bio: string
-  image: string
+  image?: string
+  theme: 'dark' | 'light'
   linkedin?: string
-  twitter?: string
-  accentColor: string
-  accentText: string
-  featured?: boolean
 }
 
-const team: TeamMember[] = [
+const teamData: TeamMember[] = [
   {
-    name: 'Amina Osei',
-    title: 'Chief Executive Officer',
-    subtitle: 'Visionary Leader',
-    bio: 'With over 20 years in corporate learning and organizational transformation, Amina has led PeakSkills to become East Africa\'s premier training consultancy. Her philosophy — that people are the greatest asset of any organization — drives every program we deliver.',
-    image: '/team_ceo.png',
-    accentColor: '#FFB300',
-    accentText: '#1D2430',
-    featured: true,
+    name: "Piniel S Laizer",
+    title: "Managing Director",
+    bio: "Mr.Piniel Laizer, armed with an MBA in Business Administration and a Bachelor's degree in Computer Science, is a seasoned professional in business development, training, and coaching. He channels his belief in human potential into actionable strategies. With a concise yet comprehensive approach, Piniel empowers individuals and organizations to thrive in today's dynamic landscape. His leadership is characterized by a relentless pursuit of excellence, underpinned by a commitment to continuous learning and innovation. Piniel's vision transcends mere success; he envisions a world where every individual realizes their full potential. Through personalized coaching and training programs, he equips his clients with the skills and mindset necessary for sustainable growth and achievement. With a firm belief in the power of collaboration and empowerment, Piniel Laizer is driving positive change and making a lasting impact in the realm of business and beyond.",
+    image: "/images/Laizer.jpg",
+    theme: "dark",
+    linkedin: "#"
   },
   {
-    name: 'James Mutua',
-    title: 'Chief Operations Officer',
-    subtitle: 'Strategy & Delivery',
-    bio: 'James architects PeakSkills\' delivery frameworks and ensures every engagement exceeds client expectations. With an MBA from Strathmore and 15+ years in HR consulting, he transforms complex business challenges into actionable training outcomes.',
-    image: '/team_coo.png',
-    accentColor: '#4DD0E1',
-    accentText: '#1D2430',
+    name: "Richard F. Kisiraga",
+    title: "Director of Operations and Business Development",
+    bio: "Mr.Richard Kisiraga is a seasoned finance and accounting professional with extensive experience in finance management spanning over a decade. His expertise includes inventory management, financial planning, budget management, and tax compliance. Currently  collaborates with teams to optimize debt recovery strategies while ensuring regulatory compliance. A senior roles at TPC Ltd, he demonstrated proficiency in operational excellence and financial planning. Richard holds a Master of Business Management from Moshi Cooperatives University and a Bachelor of Business Administration from Tumaini University Dar es Salaam. Registered for CPA (T) exams with the National Board of Accountants and Auditors (NBAA), he actively pursues professional development through seminars and training sessions. With core competencies in people management, accuracy, and punctuality, Richard is poised to excel in dynamic business environments.",
+    image: "/images/Richard.jpg",
+    theme: "light",
+    linkedin: "#"
   },
   {
-    name: 'Seren Kamau',
-    title: 'Director of Learning Design',
-    subtitle: 'Curriculum Architect',
-    bio: 'Seren leads our instructional design team, crafting bespoke learning journeys that combine cognitive science with real-world business application. She holds a Masters in Organizational Psychology and has designed programs for Fortune 500 clients.',
-    image: '/team_director.png',
-    accentColor: '#1D2430',
-    accentText: '#FFFFFF',
-  },
-  {
-    name: 'David Njoroge',
-    title: 'Head of Corporate Training',
-    subtitle: 'Executive Coach',
-    bio: 'David brings executive coaching expertise from 12+ years training C-suite leaders across banking, telecoms, and government. His hands-on facilitation style is known for producing measurable behavior change long after the program concludes.',
-    image: '/team_lead.png',
-    accentColor: '#1D2430',
-    accentText: '#FFFFFF',
-  },
+    name: "Johneudes E. Mwombeki",
+    title: "ICT Coordinator",
+    bio: "Johneudes Emmanuel Mwombeki is a dedicated professional with a strong background in Information Technology, holding a Bachelor's degree from the Institute of Finance Management and a qualification in ICT from Gukeka Vocational Training Centre. He specializes in interior design and is highly skilled in architectural consultation, blending technology and creativity to deliver exceptional design solutions.",
+    image: "/images/Mwombeki.jpg",
+    theme: "light",
+    linkedin: "#"
+  }
 ]
 
-const SocialLinks = ({ member, small }: { member: TeamMember; small?: boolean }) => (
-  <div className="flex items-center gap-2 mt-auto pt-4">
-    {(member.linkedin || member.twitter) && (
-      <a
-        href={member.linkedin || member.twitter || '#'}
-        className="flex items-center justify-center rounded-full transition-transform hover:scale-110"
-        style={{
-          width: small ? '32px' : '38px',
-          height: small ? '32px' : '38px',
-          background: 'rgba(255,255,255,0.15)',
-          color: '#FFFFFF',
-          backdropFilter: 'blur(4px)',
-        }}
-        aria-label={`${member.name} profile`}
-      >
-        <ExternalLink size={small ? 14 : 16} />
-      </a>
-    )}
-  </div>
-)
-
-// Featured large card (left side)
-const FeaturedCard = ({ member }: { member: TeamMember }) => {
-  const [hovered, setHovered] = useState(false)
-
-  return (
-    <div
-      className="relative rounded-3xl overflow-hidden cursor-pointer"
-      style={{ height: '580px' }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {/* Photo */}
-      <Image
-        src={member.image}
-        alt={member.name}
-        fill
-        className="object-cover object-top transition-transform duration-700"
-        style={{ transform: hovered ? 'scale(1.05)' : 'scale(1)' }}
-      />
-
-      {/* Permanent gradient base */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: 'linear-gradient(to top, rgba(29,36,48,0.9) 0%, rgba(29,36,48,0.3) 55%, transparent 100%)',
-        }}
-      />
-
-      {/* Accent tab */}
-      <div
-        className="absolute top-6 left-6 px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase"
-        style={{ backgroundColor: member.accentColor, color: member.accentText }}
-      >
-        {member.subtitle}
-      </div>
-
-      {/* Name + bio overlay at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 p-8">
-        <h3
-          style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF', fontSize: '26px', fontWeight: 800, marginBottom: '4px' }}
-        >
-          {member.name}
-        </h3>
-        <p style={{ color: member.accentColor, fontWeight: 600, fontSize: '14px', marginBottom: '12px' }}>
-          {member.title}
-        </p>
-
-        {/* Bio — slides up on hover */}
-        <div
-          className="overflow-hidden transition-all duration-500"
-          style={{ maxHeight: hovered ? '200px' : '0px', opacity: hovered ? 1 : 0 }}
-        >
-          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '14px', lineHeight: 1.7, marginBottom: '12px' }}>
-            {member.bio}
-          </p>
-        </div>
-
-        {/* Arrow icon */}
-        <div
-          className="flex items-center gap-2 transition-all duration-300"
-          style={{ color: member.accentColor, opacity: hovered ? 1 : 0.6 }}
-        >
-          <ArrowUpRight size={18} />
-          <span style={{ fontSize: '13px', fontWeight: 600 }}>View Profile</span>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// Compact horizontal card (right side list)
-const SideCard = ({ member, index }: { member: TeamMember; index: number }) => {
-  const [hovered, setHovered] = useState(false)
-  const isEven = index % 2 === 0
-
-  return (
-    <div
-      className="relative rounded-2xl overflow-hidden cursor-pointer flex"
-      style={{ height: '160px', transition: 'all 0.3s ease' }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {/* Photo strip */}
-      <div className="relative flex-shrink-0" style={{ width: '140px' }}>
-        <Image
-          src={member.image}
-          alt={member.name}
-          fill
-          className="object-cover object-top transition-transform duration-500"
-          style={{ transform: hovered ? 'scale(1.08)' : 'scale(1)' }}
-        />
-      </div>
-
-      {/* Content area */}
-      <div
-        className="flex flex-col justify-center px-5 py-4 flex-1 relative overflow-hidden"
-        style={{
-          background: hovered
-            ? isEven ? '#1D2430' : '#4DD0E1'
-            : isEven ? '#F4F7FA' : '#E8F8FA',
-          transition: 'background 0.3s ease',
-        }}
-      >
-        {/* Accent bar */}
-        <div
-          className="absolute left-0 top-0 bottom-0 w-1"
-          style={{ backgroundColor: member.accentColor }}
-        />
-
-        <p
-          className="text-xs font-bold tracking-widest uppercase mb-1 transition-colors duration-300"
-          style={{ color: hovered ? (isEven ? '#4DD0E1' : '#1D2430') : '#9BAAB8' }}
-        >
-          {member.subtitle}
-        </p>
-        <h4
-          style={{
-            fontFamily: 'Arial, Helvetica, sans-serif',
-            fontWeight: 800,
-            fontSize: '16px',
-            color: hovered ? (isEven ? '#FFFFFF' : '#1D2430') : '#1D2430',
-            marginBottom: '3px',
-            transition: 'color 0.3s ease',
-          }}
-        >
-          {member.name}
-        </h4>
-        <p
-          className="text-xs font-semibold mb-3 transition-colors duration-300"
-          style={{ color: hovered ? (isEven ? '#FFB300' : '#1D2430') : '#5C6B7A' }}
-        >
-          {member.title}
-        </p>
-
-        {/* Bio — reveals on hover */}
-        <div
-          className="overflow-hidden transition-all duration-400"
-          style={{ maxHeight: hovered ? '80px' : '0px', opacity: hovered ? 1 : 0 }}
-        >
-          <p
-            className="text-xs leading-relaxed"
-            style={{ color: hovered ? (isEven ? 'rgba(255,255,255,0.8)' : 'rgba(29,36,48,0.8)') : 'transparent' }}
-          >
-            {member.bio.slice(0, 100)}…
-          </p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export default function TeamSection() {
-  const featured = team.find(m => m.featured)!
-  const rest = team.filter(m => !m.featured)
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null)
+
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    if (selectedMember) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => { document.body.style.overflow = 'unset' }
+  }, [selectedMember])
 
   return (
-    <section className="w-full pt-12 pb-20" style={{ background: 'linear-gradient(135deg, #0D1B2A 0%, #1D2430 50%, #162032 100%)' }}>
+    <section className="w-full pt-8 pb-20 bg-[#F4F9F5] relative">
       <div className="max-w-7xl mx-auto px-6">
-
-        {/* Section header */}
-        <div className="flex flex-col items-center text-center gap-4 mb-12">
-          <div>
-            <p
-              className="text-xs font-bold tracking-widest uppercase mb-3"
-              style={{ color: '#4DD0E1' }}
-            >
-              The People Behind PeakSkills
-            </p>
-            <h2
-              style={{ fontFamily: 'Arial, Helvetica, sans-serif', color: '#FFFFFF', fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 900, lineHeight: 1.1 }}
-            >
-              Meet the{' '}
-              <span style={{ color: '#FFB300' }}>Leadership Team</span>
-            </h2>
+        
+        {/* Header */}
+        <div className="text-center mb-16 flex flex-col items-center">
+          <h2 className="text-[#072F12] text-4xl font-bold mb-4 font-sans tracking-tight">
+            Leadership
+          </h2>
+          {/* Decorative dots and line */}
+          <div className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1D2430]"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1D2430]"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#1D2430]"></span>
+            <span className="w-10 h-1.5 rounded-full bg-[#1D2430] ml-1"></span>
           </div>
-          <p
-            className="max-w-sm text-sm leading-relaxed"
-            style={{ color: 'rgba(255,255,255,0.6)' }}
-          >
-            Seasoned practitioners, not just consultants. Every leader at PeakSkills has walked the path they now teach.
-          </p>
         </div>
 
-        {/* Grid: featured left + 3 stacked right */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {teamData.map((member, idx) => (
+            <div 
+              key={idx}
+              onClick={() => setSelectedMember(member)}
+              className="group cursor-pointer rounded-sm shadow-md overflow-hidden transition-colors duration-300 hover:shadow-xl flex flex-col items-center p-10 bg-white hover:bg-[#4DD0E1] text-[#1D2430]"
+            >
+              {/* Image Circle */}
+              <div className="w-56 h-56 rounded-full overflow-hidden mb-8 border-4 border-transparent group-hover:border-opacity-30 group-hover:border-white transition-all shadow-sm">
+                {member.image ? (
+                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                ) : (
+                  <PlaceholderAvatar />
+                )}
+              </div>
 
-          {/* Featured card — spans 2 columns */}
-          <div className="lg:col-span-2">
-            <FeaturedCard member={featured} />
-          </div>
+              {/* Text */}
+              <h3 className="text-xl font-bold mb-2 text-center">{member.name}</h3>
+              <p className="text-sm font-medium text-center mb-6 text-gray-500 group-hover:text-gray-800 transition-colors">
+                {member.title}
+              </p>
 
-          {/* Right side: 3 stacked horizontal cards */}
-          <div className="lg:col-span-3 flex flex-col gap-5">
-            {rest.map((member, i) => (
-              <SideCard key={member.name} member={member} index={i} />
-            ))}
-          </div>
-
+              {/* LinkedIn Icon */}
+              {member.linkedin && (
+                <div className="mt-auto">
+                  <a 
+                    href={member.linkedin} 
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-[#FFB300] text-white hover:bg-[#E5A100] transition-colors shadow-sm"
+                  >
+                    <LinkedinIcon size={18} fill="currentColor" />
+                  </a>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
-
       </div>
+
+      {/* Modal Popup */}
+      {selectedMember && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => setSelectedMember(null)}
+          ></div>
+          
+          {/* Modal Content */}
+          <div className="relative bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-md shadow-2xl flex flex-col md:flex-row z-10 animate-in fade-in zoom-in duration-200">
+            
+            {/* Close Button */}
+            <button 
+              onClick={() => setSelectedMember(null)}
+              className="absolute top-4 right-4 text-[#3F9A28] hover:text-[#2E731D] transition-colors z-20 bg-white rounded-full p-1 shadow-md cursor-pointer"
+            >
+              <X size={28} strokeWidth={2.5} />
+            </button>
+
+            {/* Left Side: Image Area */}
+            <div className="w-full md:w-5/12 bg-[#F3F4F6] p-8 md:p-12 flex items-center justify-center min-h-[300px]">
+              <div className="w-64 h-64 md:w-72 md:h-72 rounded-full overflow-hidden shadow-lg border-4 border-white">
+                {selectedMember.image ? (
+                  <img src={selectedMember.image} alt={selectedMember.name} className="w-full h-full object-cover" />
+                ) : (
+                  <PlaceholderAvatar />
+                )}
+              </div>
+            </div>
+
+            {/* Right Side: Details Area */}
+            <div className="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center bg-white">
+              <h3 className="text-3xl font-bold text-gray-900 mb-2">{selectedMember.name}</h3>
+              <p className="text-sm font-medium text-gray-500 mb-8 pb-4 border-b border-gray-100">
+                {selectedMember.title}
+              </p>
+              
+              <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed mb-8 whitespace-pre-wrap">
+                {selectedMember.bio}
+              </div>
+
+              {selectedMember.linkedin && (
+                <div className="mt-auto">
+                  <a 
+                    href={selectedMember.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#3F9A28] text-white hover:bg-[#337C20] transition-colors shadow-sm"
+                  >
+                    <LinkedinIcon size={18} fill="currentColor" />
+                  </a>
+                </div>
+              )}
+            </div>
+            
+          </div>
+        </div>
+      )}
     </section>
   )
 }

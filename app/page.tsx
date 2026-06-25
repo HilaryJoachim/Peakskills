@@ -9,6 +9,7 @@ import SubscribeBand from '@/components/sections/SubscribeBand'
 import EventsShowcase from '@/components/sections/EventsShowcase'
 import CalendarCTA from '@/components/sections/CalendarCTA'
 import TrainingImpact from '@/components/sections/TrainingImpact'
+import ClienteleSection from '@/components/sections/ClienteleSection'
 import CategoriesRibbon from '@/components/sections/CategoriesRibbon'
 import { getPrograms } from '@/lib/supabase'
 
@@ -37,6 +38,7 @@ export default async function HomePage() {
         <EventsShowcase />
         <CalendarCTA />
         <TrainingImpact />
+        <ClienteleSection />
         <SubscribeBand />
       </main>
       <Footer />

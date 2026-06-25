@@ -10,9 +10,22 @@ export default function SubscribeBand() {
     e.preventDefault()
     if (!email) return
     setStatus('loading')
-    await new Promise(r => setTimeout(r, 800))
-    setStatus('success')
-    setEmail('')
+    try {
+      await fetch('https://formsubmit.co/ajax/kimsako22@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          _subject: `New Newsletter Subscription`,
+          email
+        })
+      })
+      setStatus('success')
+      setEmail('')
+    } catch (error) {
+      console.error(error)
+      setStatus('idle')
+      alert("Failed to subscribe. Please try again.")
+    }
   }
 
   return (

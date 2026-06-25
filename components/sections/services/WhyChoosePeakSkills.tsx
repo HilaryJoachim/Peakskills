@@ -5,24 +5,24 @@ import { Briefcase, BookOpen, Target, LineChart } from 'lucide-react'
 export default function WhyChoosePeakSkills() {
   const cards = [
     {
-      icon: <Briefcase size={28} />,
-      title: 'Industry Experience',
-      desc: 'Programs designed around real workplace challenges and organizational realities.',
+      icon: <LineChart size={28} />,
+      title: 'Practical, Results-Driven Training',
+      desc: 'Our programs focus on real workplace challenges, providing practical skills that participants can immediately apply to improve performance.',
     },
     {
       icon: <BookOpen size={28} />,
-      title: 'Practical Learning',
-      desc: 'Training focused on skills participants can immediately apply.',
+      title: 'Expert-Led Learning',
+      desc: 'Learn from experienced industry professionals who bring real-world knowledge, proven best practices, and practical insights to every training session.',
+    },
+    {
+      icon: <Briefcase size={28} />,
+      title: 'Leadership & Personal Growth',
+      desc: 'We help individuals build confidence, leadership capabilities, communication skills, and professional effectiveness to excel in their careers.',
     },
     {
       icon: <Target size={28} />,
-      title: 'Customized Delivery',
-      desc: 'Solutions tailored to organizational goals, workforce needs, and industry context.',
-    },
-    {
-      icon: <LineChart size={28} />,
-      title: 'Measurable Results',
-      desc: 'Programs focused on improving performance, leadership, service quality, and business outcomes.',
+      title: 'Customized Solutions',
+      desc: 'Every organization is different. We tailor our training, consulting, and coaching programs to match your industry, objectives, and business challenges.',
     },
   ]
 
