@@ -53,6 +53,7 @@ export async function POST(request: Request) {
       html: applicantEmail,
     })
 
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
     const adminEmail = `
       <h3>New Training Application</h3>
       <p><strong>Applicant Name:</strong> ${fullName}</p>
@@ -60,7 +61,7 @@ export async function POST(request: Request) {
       <p><strong>Phone:</strong> ${phoneNumber}</p>
       <p><strong>Learning Mode:</strong> ${learningMode}</p>
       <p><strong>Submission Time:</strong> ${new Date().toLocaleString()}</p>
-      <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/admin/applications" style="display:inline-block;padding:10px 20px;background:#0077B6;color:#fff;text-decoration:none;border-radius:5px;">Review Application</a>
+      <a href="${baseUrl}/admin/applications" style="display:inline-block;padding:10px 20px;background:#0077B6;color:#fff;text-decoration:none;border-radius:5px;">Review Application</a>
     `
 
     await sendEmail({

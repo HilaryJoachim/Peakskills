@@ -54,7 +54,8 @@ export async function approveApplication(appId: string) {
   }
 
   // Send Email
-  const activationLink = `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/create-account?token=${token}`
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+  const activationLink = `${baseUrl}/create-account?token=${token}`
   const emailHtml = `
     <h3>Congratulations! Your application has been approved.</h3>
     <p>Dear ${app.full_name},</p>
