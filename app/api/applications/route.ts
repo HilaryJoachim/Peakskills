@@ -53,7 +53,10 @@ export async function POST(request: Request) {
       html: applicantEmail,
     })
 
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+    const host = request.headers.get('host') || 'localhost:3000'
+    const protocol = host.includes('localhost') ? 'http' : 'https'
+    const baseUrl = `${protocol}://${host}`
+    
     const adminEmail = `
       <h3>New Training Application</h3>
       <p><strong>Applicant Name:</strong> ${fullName}</p>

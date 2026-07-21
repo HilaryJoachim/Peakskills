@@ -3,6 +3,7 @@
 import { supabase } from '@/lib/supabase'
 import { sendEmail } from '@/lib/email'
 import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
 
 export async function getApplications() {
   if (!supabase) return []
@@ -54,7 +55,10 @@ export async function approveApplication(appId: string) {
   }
 
   // Send Email
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+  const headersList = await headers()
+  const host = headersList.get('host') || 'localhost:3000'
+  const protocol = host.includes('localhost') ? 'http' : 'https'
+  const baseUrl = `${protocol}://${host}`
   const activationLink = `${baseUrl}/create-account?token=${token}`
   const emailHtml = `
     <h3>Congratulations! Your application has been approved.</h3>
