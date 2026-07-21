@@ -21,6 +21,11 @@ const XIcon = () => (
     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
   </svg>
 )
+const WhatsAppIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12.031 2C6.49 2 2 6.49 2 12.031c0 1.763.46 3.486 1.332 5.008L2 22l5.086-1.334A9.986 9.986 0 0 0 12.031 22c5.54 0 10.03-4.49 10.03-10.03S17.571 2 12.031 2Zm5.44 14.282c-.227.638-1.319 1.226-1.815 1.272-.496.046-1.085.122-3.48-1.002-2.871-1.348-4.707-4.304-4.853-4.502-.146-.197-1.157-1.542-1.157-2.94 0-1.398.73-2.09.992-2.366.262-.276.571-.345.76-.345.19 0 .38.001.54.008.172.008.404-.066.632.484.234.552.79 1.93.863 2.078.073.148.117.319.03.553-.09.233-.132.38-.263.535-.132.154-.277.34-.4.47-.132.132-.272.277-.117.545.154.269.686 1.138 1.474 1.839.996.887 1.848 1.162 2.112 1.3.264.138.418.118.572-.054.154-.173.663-.77.839-1.036.176-.266.352-.22.596-.128.244.092 1.54.726 1.805.858.265.132.441.198.507.31.066.111.066.638-.16 1.276Z"/>
+  </svg>
+)
 
 const footerLinks = {
   Programs: [
@@ -60,16 +65,22 @@ export default function Footer() {
           </p>
           <div style={{ display: 'flex', gap: '12px' }}>
             {[
+              { icon: <WhatsAppIcon />, href: 'https://wa.me/255718710361', label: 'WhatsApp', isPrimary: true },
               { icon: <LinkedInIcon />, href: '#', label: 'LinkedIn' },
               { icon: <XIcon />, href: '#', label: 'X (formerly Twitter)' },
               { icon: <FacebookIcon />, href: '#', label: 'Facebook' },
             ].map((s) => (
-              <a key={s.label} href={s.href} aria-label={s.label} style={{
+              <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} style={{
                 width: '36px', height: '36px', borderRadius: '6px',
-                border: '1px solid rgba(255,255,255,0.12)', display: 'flex',
-                alignItems: 'center', justifyContent: 'center', color: '#A9B4C2',
-                transition: 'color 0.15s, border-color 0.15s', textDecoration: 'none',
-              }}>{s.icon}</a>
+                background: s.isPrimary ? '#25D366' : 'transparent',
+                border: s.isPrimary ? 'none' : '1px solid rgba(255,255,255,0.12)', 
+                display: 'flex',
+                alignItems: 'center', justifyContent: 'center', color: s.isPrimary ? '#fff' : '#A9B4C2',
+                transition: 'transform 0.15s, color 0.15s, border-color 0.15s', textDecoration: 'none',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'none' }}
+              >{s.icon}</a>
             ))}
           </div>
         </div>
@@ -104,7 +115,7 @@ export default function Footer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {[
               { icon: <MapPin size={16} />, text: 'Dar es Salaam, Tanzania' },
-              { icon: <Phone size={16} />, text: '+255 754 232 863 / 0718 710 361' },
+              { icon: <Phone size={16} />, text: '+255 718 710 361' },
               { icon: <Mail size={16} />, text: 'info@peakskills.co.tz' },
             ].map((item, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '14px', color: '#A9B4C2' }}>

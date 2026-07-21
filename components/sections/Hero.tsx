@@ -63,32 +63,13 @@ export default function Hero() {
           {/* CTAs */}
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link
-              href="/request-training"
+              href="/programs"
               style={{
                 background: '#0077B6', 
                 color: '#fff',
                 padding: '16px 36px', 
                 borderRadius: '40px', // Pill shape
-                fontFamily: 'Arial, Helvetica, sans-serif', 
-                fontWeight: 700, 
-                fontSize: '16px',
-                textDecoration: 'none', 
-                display: 'inline-block',
-                transition: 'background 0.2s',
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#005F8E' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0077B6' }}
-            >
-              Request Training
-            </Link>
-            <Link
-              href="/programs"
-              style={{
-                background: 'transparent', 
-                color: '#fff',
-                padding: '16px 36px', 
-                borderRadius: '40px', // Pill shape
-                border: '2px solid rgba(255,255,255,0.5)',
+                border: 'none',
                 fontFamily: 'Arial, Helvetica, sans-serif', 
                 fontWeight: 700, 
                 fontSize: '16px',
@@ -96,10 +77,10 @@ export default function Hero() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '8px',
-                transition: 'border-color 0.2s, background 0.2s',
+                transition: 'background 0.2s',
               }}
-              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = '#fff'; el.style.background = 'rgba(255,255,255,0.1)' }}
-              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor = 'rgba(255,255,255,0.5)'; el.style.background = 'transparent' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#005F8E' }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0077B6' }}
             >
               Explore Programs ↗
             </Link>

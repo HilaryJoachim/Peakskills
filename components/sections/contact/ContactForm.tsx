@@ -1,8 +1,11 @@
 'use client'
 
-import { Mail, Phone, MapPin } from 'lucide-react'
+import { useState } from 'react'
+import { Mail, Phone, MapPin, CheckCircle } from 'lucide-react'
 
 export default function ContactForm() {
+  const [status, setStatus] = useState<'idle' | 'success'>('idle')
+
   return (
     <section className="py-20 md:py-28" style={{ backgroundColor: '#F4F7FA' }}>
       <div className="max-w-7xl mx-auto px-6">
@@ -106,34 +109,58 @@ export default function ContactForm() {
                 border: '1px solid #DDE4EC'
               }}
             >
-              <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '24px', fontWeight: 600, color: '#1D2430', marginBottom: '32px' }}>
-                Send us a message
-              </h3>
-              
-              <form className="flex flex-col gap-6" onSubmit={async (e) => {
-                  e.preventDefault();
-                  const form = e.target as HTMLFormElement;
-                  const formData = new FormData(form);
-                  const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-                  const originalText = submitBtn.innerText;
-                  submitBtn.disabled = true;
-                  submitBtn.innerText = 'Sending...';
-                  try {
-                    await fetch('https://formsubmit.co/ajax/kimsako22@gmail.com', {
-                      method: 'POST',
-                      headers: { 'Accept': 'application/json' },
-                      body: formData
-                    });
-                    form.reset();
-                    alert('Message sent successfully!');
-                  } catch (err) {
-                    alert('Failed to send message.');
-                  } finally {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = originalText;
-                  }
-                }}>
-                <div className="flex flex-col md:flex-row gap-6">
+              {status === 'success' ? (
+                <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+                  <CheckCircle size={56} style={{ color: '#2ECC40', margin: '0 auto 20px' }} strokeWidth={1.5} />
+                  <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '24px', fontWeight: 600, color: '#1D2430', marginBottom: '16px' }}>
+                    Message Sent Successfully!
+                  </h3>
+                  <p style={{ fontFamily: 'var(--font-body)', fontSize: '16px', color: '#5C6B7A', lineHeight: 1.6, marginBottom: '32px' }}>
+                    Thank you for reaching out to PeakSkills. Our team has received your message and will get back to you shortly.
+                  </p>
+                  <button
+                    onClick={() => setStatus('idle')}
+                    style={{
+                      background: '#1D2430', color: '#FFFFFF',
+                      padding: '12px 28px', borderRadius: '8px',
+                      fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: '15px',
+                      border: 'none', cursor: 'pointer',
+                    }}
+                  >
+                    Send Another Message
+                  </button>
+                </div>
+              ) : (
+                <>
+                  <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '24px', fontWeight: 600, color: '#1D2430', marginBottom: '32px' }}>
+                    Send us a message
+                  </h3>
+                  
+                  <form className="flex flex-col gap-6" onSubmit={async (e) => {
+                      e.preventDefault();
+                      const form = e.target as HTMLFormElement;
+                      const formData = new FormData(form);
+                      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+                      const originalText = submitBtn.innerText;
+                      submitBtn.disabled = true;
+                      submitBtn.innerText = 'Sending...';
+                      try {
+                        const res = await fetch('/api/contact', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify(Object.fromEntries(formData))
+                        });
+                        if (!res.ok) throw new Error('Failed to send message');
+                        form.reset();
+                        setStatus('success');
+                      } catch (err) {
+                        alert('Failed to send message. Please try again later.');
+                      } finally {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = originalText;
+                      }
+                    }}>
+                    <div className="flex flex-col md:flex-row gap-6">
                   <div className="flex-1 flex flex-col gap-2">
                     <label style={{ fontFamily: 'var(--font-body)', fontSize: '14px', fontWeight: 600, color: '#1D2430' }}>First Name <span className="text-red-500">*</span></label>
                     <input 
@@ -227,6 +254,8 @@ export default function ContactForm() {
                 </button>
 
               </form>
+              </>
+              )}
             </div>
           </div>
 

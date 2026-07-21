@@ -189,16 +189,33 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
         <h3 style={{
           fontFamily: 'IBM Plex Sans, sans-serif',
           fontWeight: 700,
-          fontSize: '15px',
+          fontSize: '16px',
           lineHeight: 1.3,
           color: '#1D2430',
-          margin: '0 0 10px',
+          margin: '0 0 8px',
         }}>
           {program.title}
         </h3>
 
+        {/* ── Description (4 lines) ── */}
+        <p style={{
+          fontFamily: 'Source Sans 3, sans-serif',
+          fontSize: '14px',
+          lineHeight: 1.5,
+          color: '#5C6B7A',
+          margin: '0 0 16px',
+          display: '-webkit-box',
+          WebkitLineClamp: 4,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          minHeight: '84px' // 14px * 1.5 = 21px per line * 4 lines = 84px
+        }}>
+          {program.short_description || 'This comprehensive program equips you with essential skills and practical knowledge to excel in your role. Join our expert-led sessions to transform your career and achieve your professional goals.'}
+        </p>
+
         {/* ── Meta: location / duration / seats ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px', minHeight: '66px' }}>
           {nextCohort?.location && (
             <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#5C6B7A', fontFamily: 'Source Sans 3, sans-serif' }}>
               <PinIcon />
@@ -218,7 +235,7 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
         </div>
 
         {/* ── Start → End date boxes ── */}
-        {nextCohort && (
+        {nextCohort ? (
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -255,6 +272,22 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
               </p>
             </div>
           </div>
+        ) : (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '12px',
+            background: '#F4F7FA',
+            borderRadius: '8px',
+            padding: '7px 10px',
+            height: '46px',
+            boxSizing: 'border-box'
+          }}>
+            <p style={{ margin: 0, fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '13px', color: '#5C6B7A' }}>
+              {program.format === 'online' ? 'Available Anytime' : 'Dates to be announced'}
+            </p>
+          </div>
         )}
 
         {/* ── Spacer ── */}
@@ -265,6 +298,10 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
           borderTop: '1px solid #EEF1F5',
           paddingTop: '10px',
           marginBottom: '10px',
+          minHeight: '52px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
             <span style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '13px', color: '#5C6B7A' }}>Per person</span>

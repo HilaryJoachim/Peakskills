@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import WhatsAppFAB from '@/components/layout/WhatsAppFAB'
 
 export const metadata: Metadata = {
   title: {
@@ -31,11 +32,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body suppressHydrationWarning>
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
         {children}
+        <WhatsAppFAB />
       </body>
     </html>
   )

@@ -79,7 +79,7 @@ export default async function ProgramDetailPage({ params }: Props) {
 
   const sessionDateString = nextCohort ? `${formatDateFull(nextCohort.start_date)} – ${formatDateFull(nextCohort.end_date)}` : '';
   const locationString = nextCohort?.location ? nextCohort.location.split('—')[0].trim() : '';
-  const registerUrl = `/register?program=${encodeURIComponent(program.title)}&session=${encodeURIComponent(sessionDateString)}&location=${encodeURIComponent(locationString)}`;
+  const registerUrl = `/mentorship-coaching?program=${encodeURIComponent(program.title)}${nextCohort ? `&cohort=${encodeURIComponent(nextCohort.id)}` : ''}#apply`;
 
   return (
     <>
@@ -134,8 +134,20 @@ export default async function ProgramDetailPage({ params }: Props) {
                   {program.title}
                 </h1>
 
-                <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '17px', lineHeight: 1.7, color: 'rgba(255,255,255,0.75)', margin: '0 0 32px', maxWidth: '540px' }}>
-                  {program.short_description}
+                <p style={{ 
+                  fontFamily: 'Source Sans 3, sans-serif', 
+                  fontSize: '17px', 
+                  lineHeight: 1.7, 
+                  color: 'rgba(255,255,255,0.75)', 
+                  margin: '0 0 32px', 
+                  maxWidth: '540px',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 4,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis'
+                }}>
+                  {program.short_description} {program.overview && program.overview.length > 0 ? program.overview : 'This comprehensive program is designed to equip you with the essential skills and practical knowledge needed to excel. Join our expert-led sessions to transform your career and achieve your professional goals.'}
                 </p>
 
                 {/* Quick meta */}
@@ -162,23 +174,7 @@ export default async function ProgramDetailPage({ params }: Props) {
                   )}
                 </div>
 
-                {/* Primary CTAs — visible without scrolling */}
-                <div style={{ display: 'flex', gap: '20px', marginTop: '36px', flexWrap: 'wrap' }}>
-                  <div style={{ flex: '1', minWidth: '240px', maxWidth: '300px' }}>
-                    <Link
-                      href={registerUrl}
-                      style={{
-                        background: '#0077B6', color: '#fff',
-                        padding: '13px 28px', borderRadius: '6px', textAlign: 'center',
-                        fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '15px',
-                        textDecoration: 'none', display: 'inline-block',
-                      }}
-                    >
-                      Register For This Session
-                    </Link>
-                  </div>
 
-                </div>
               </div>
 
               {/* Right — Hero image */}
@@ -206,16 +202,16 @@ export default async function ProgramDetailPage({ params }: Props) {
                   Program Overview
                 </h2>
                 <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16px', lineHeight: 1.75, color: '#1D2430', margin: 0 }}>
-                  {program.overview}
+                  {program.overview || 'The complete overview for this program is currently being updated. Please check back shortly or contact our training team for a detailed curriculum outline and module breakdown.'}
                 </p>
               </section>
 
               {/* Learning Outcomes */}
-              {program.learning_outcomes && program.learning_outcomes.length > 0 && (
-                <section aria-labelledby="outcomes-heading">
-                  <h2 id="outcomes-heading" style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '22px', color: '#1D2430', margin: '0 0 20px', paddingBottom: '12px', borderBottom: '2px solid #DDE4EC' }}>
-                    What You Will Learn
-                  </h2>
+              <section aria-labelledby="outcomes-heading">
+                <h2 id="outcomes-heading" style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '22px', color: '#1D2430', margin: '0 0 20px', paddingBottom: '12px', borderBottom: '2px solid #DDE4EC' }}>
+                  What You Will Learn
+                </h2>
+                {program.learning_outcomes && program.learning_outcomes.length > 0 ? (
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '14px' }}>
                     {program.learning_outcomes.map((outcome, i) => (
                       <li key={i} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
@@ -226,39 +222,41 @@ export default async function ProgramDetailPage({ params }: Props) {
                       </li>
                     ))}
                   </ul>
-                </section>
-              )}
+                ) : (
+                  <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '15px', color: '#5C6B7A', fontStyle: 'italic', margin: 0 }}>
+                    Learning outcomes are currently being finalized. This program is designed to deliver practical, applicable skills for immediate workplace impact.
+                  </p>
+                )}
+              </section>
 
               {/* Target Audience */}
-              {program.target_audience && (
-                <section aria-labelledby="audience-heading">
-                  <h2 id="audience-heading" style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '22px', color: '#1D2430', margin: '0 0 20px', paddingBottom: '12px', borderBottom: '2px solid #DDE4EC' }}>
-                    Who This Program Is For
-                  </h2>
-                  <div style={{ 
-                    position: 'relative', overflow: 'hidden',
-                    background: 'linear-gradient(135deg, #0A1628 0%, #1D2430 45%, #0D2137 100%)', 
-                    borderRadius: '8px', padding: '24px',
-                    boxShadow: '0 8px 24px rgba(29,36,48,0.1)'
-                  }}>
-                    {/* Decorative dot-grid overlay */}
-                    <div
-                      style={{
-                        position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                        zIndex: 0, opacity: 0.06,
-                        backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
-                        backgroundSize: '24px 24px',
-                      }}
-                    />
-                    <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                      <Users size={22} style={{ color: '#4DD0E1', flexShrink: 0, marginTop: '2px' }} strokeWidth={2} />
-                      <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.9)', margin: 0 }}>
-                        {program.target_audience}
-                      </p>
-                    </div>
+              <section aria-labelledby="audience-heading">
+                <h2 id="audience-heading" style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '22px', color: '#1D2430', margin: '0 0 20px', paddingBottom: '12px', borderBottom: '2px solid #DDE4EC' }}>
+                  Who This Program Is For
+                </h2>
+                <div style={{ 
+                  position: 'relative', overflow: 'hidden',
+                  background: 'linear-gradient(135deg, #0A1628 0%, #1D2430 45%, #0D2137 100%)', 
+                  borderRadius: '8px', padding: '24px',
+                  boxShadow: '0 8px 24px rgba(29,36,48,0.1)'
+                }}>
+                  {/* Decorative dot-grid overlay */}
+                  <div
+                    style={{
+                      position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                      zIndex: 0, opacity: 0.06,
+                      backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
+                      backgroundSize: '24px 24px',
+                    }}
+                  />
+                  <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                    <Users size={22} style={{ color: '#4DD0E1', flexShrink: 0, marginTop: '2px' }} strokeWidth={2} />
+                    <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.9)', margin: 0 }}>
+                      {program.target_audience || 'This program is suitable for professionals looking to enhance their skills and drive performance within their organization. Contact us to verify if this curriculum aligns with your specific career goals.'}
+                    </p>
                   </div>
-                </section>
-              )}
+                </div>
+              </section>
 
               {/* Delivery Methods */}
               <section aria-labelledby="delivery-heading">
@@ -285,36 +283,49 @@ export default async function ProgramDetailPage({ params }: Props) {
               </section>
 
               {/* Certification */}
-              {program.certification_info && (
-                <section aria-labelledby="cert-heading">
-                  <h2 id="cert-heading" style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '22px', color: '#1D2430', margin: '0 0 20px', paddingBottom: '12px', borderBottom: '2px solid #DDE4EC' }}>
-                    Certification
-                  </h2>
-                  <div style={{ 
-                    position: 'relative', overflow: 'hidden',
-                    background: 'linear-gradient(135deg, #0A1628 0%, #1D2430 45%, #0D2137 100%)', 
-                    borderRadius: '8px', padding: '24px',
-                    boxShadow: '0 8px 24px rgba(29,36,48,0.1)'
-                  }}>
-                    {/* Decorative dot-grid overlay */}
-                    <div
-                      style={{
-                        position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                        zIndex: 0, opacity: 0.06,
-                        backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
-                        backgroundSize: '24px 24px',
-                      }}
-                    />
-                    <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
-                      <Award size={22} style={{ color: '#FFB300', flexShrink: 0, marginTop: '2px' }} strokeWidth={2} />
-                      <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.9)', margin: 0 }}>
-                        {program.certification_info}
-                      </p>
-                    </div>
+              <section aria-labelledby="cert-heading">
+                <h2 id="cert-heading" style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '22px', color: '#1D2430', margin: '0 0 20px', paddingBottom: '12px', borderBottom: '2px solid #DDE4EC' }}>
+                  Certification
+                </h2>
+                <div style={{ 
+                  position: 'relative', overflow: 'hidden',
+                  background: 'linear-gradient(135deg, #0A1628 0%, #1D2430 45%, #0D2137 100%)', 
+                  borderRadius: '8px', padding: '24px',
+                  boxShadow: '0 8px 24px rgba(29,36,48,0.1)'
+                }}>
+                  {/* Decorative dot-grid overlay */}
+                  <div
+                    style={{
+                      position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                      zIndex: 0, opacity: 0.06,
+                      backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)',
+                      backgroundSize: '24px 24px',
+                    }}
+                  />
+                  <div style={{ position: 'relative', zIndex: 1, display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                    <Award size={22} style={{ color: '#FFB300', flexShrink: 0, marginTop: '2px' }} strokeWidth={2} />
+                    <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16.5px', lineHeight: 1.65, color: 'rgba(255,255,255,0.9)', margin: 0 }}>
+                      {program.certification_info || 'Participants who successfully complete this program will receive a recognized Certificate of Completion from PeakSkills.'}
+                    </p>
                   </div>
-                </section>
-              )}
+                </div>
+              </section>
 
+              {/* Bottom Registration CTA */}
+              <div style={{ marginTop: '16px' }}>
+                <Link
+                  href={registerUrl}
+                  style={{
+                    background: '#0077B6', color: '#fff',
+                    padding: '14px 32px', borderRadius: '6px', textAlign: 'center',
+                    fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '16px',
+                    textDecoration: 'none', display: 'inline-block',
+                    boxShadow: '0 4px 12px rgba(0, 119, 182, 0.2)'
+                  }}
+                >
+                  Register For This Session
+                </Link>
+              </div>
 
             </div>
 
@@ -343,16 +354,6 @@ export default async function ProgramDetailPage({ params }: Props) {
                     </p>
                   </div>
                 )}
-
-                {/* Registration Info */}
-                <div style={{ marginTop: '16px' }}>
-                  <p style={{ margin: 0, fontFamily: 'Source Sans 3, sans-serif', fontSize: '14px', color: '#5C6B7A', lineHeight: 1.5 }}>
-                    Available seats can be reserved through the{' '}
-                    <Link href={registerUrl} style={{ color: '#0077B6', textDecoration: 'underline', fontWeight: 600 }}>
-                      registration form
-                    </Link>.
-                  </p>
-                </div>
 
 
                 {/* Quick facts */}
@@ -395,7 +396,7 @@ export default async function ProgramDetailPage({ params }: Props) {
                     We can deliver this program exclusively for your organization — customized for your sector, at your premises, on your schedule.
                   </p>
                   <Link
-                    href={`/request-training?program=${encodeURIComponent(program.title)}`}
+                    href={`/contact?program=${encodeURIComponent(program.title)}`}
                     style={{
                       background: '#4DD0E1', color: '#0A1628',
                       padding: '11px 20px', borderRadius: '6px', textAlign: 'center',

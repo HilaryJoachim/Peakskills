@@ -21,6 +21,7 @@ const navLinks = [
     ],
   },
   { label: 'Services', href: '/services' },
+  { label: 'Mentorship', href: '/mentorship-coaching' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ]
@@ -126,22 +127,7 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* CTA Button */}
-        <Link
-          href="/request-training"
-          style={{
-            background: '#0077B6', color: '#fff',
-            padding: '9px 20px', borderRadius: '6px',
-            fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '14px',
-            textDecoration: 'none', whiteSpace: 'nowrap',
-            transition: 'background 0.15s',
-          }}
-          className="cta-btn"
-          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#005F8E' }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0077B6' }}
-        >
-          Request Training
-        </Link>
+
 
         {/* Mobile hamburger */}
         <button
@@ -221,28 +207,13 @@ export default function Header() {
               )}
             </div>
           ))}
-          <div style={{ marginTop: 'auto', paddingTop: '24px' }}>
-            <Link
-              href="/request-training"
-              onClick={() => setMobileOpen(false)}
-              style={{
-                display: 'block', textAlign: 'center',
-                background: '#0077B6', color: '#fff',
-                padding: '14px 24px', borderRadius: '8px',
-                fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '16px',
-                textDecoration: 'none',
-              }}
-            >
-              Request Training
-            </Link>
-          </div>
+
         </div>
       )}
 
       <style>{`
         @media (max-width: 1023px) {
           .desktop-nav { display: none !important; }
-          .cta-btn { display: none !important; }
           .hamburger-btn { display: flex !important; }
           .header-container { padding: 0 16px !important; }
         }

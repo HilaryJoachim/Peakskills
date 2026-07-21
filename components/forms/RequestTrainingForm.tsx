@@ -1,38 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Send, CheckCircle } from 'lucide-react'
 
-const INDUSTRIES = [
-  'Banking & Financial Services', 'Government & Public Sector', 'NGO & Development Sector',
-  'Telecommunications & Technology', 'Education & Research', 'Port, Transport & Logistics',
-  'Healthcare', 'Manufacturing & Industry', 'Insurance', 'Other',
-]
-
-const DELIVERY_METHODS = ['In-Person (at our premises)', 'In-House (at your premises)', 'Online / Virtual', 'Hybrid (in-person + online)']
-const BUDGET_RANGES = ['Under TZS 1 million', 'TZS 1–5 million', 'TZS 5–15 million', 'TZS 15–30 million', 'TZS 30 million +', 'To be discussed']
+type Program = { id: string; title: string }
+type Cohort = { id: string; program_id: string; start_date: string; location: string | null }
 
 type FormData = {
-  organizationName: string
-  industry: string
-  contactPerson: string
-  position: string
+  fullName: string
   email: string
   phoneNumber: string
-  numberOfParticipants: string
-  trainingTopic: string
-  preferredDeliveryMethod: string
-  preferredDates: string
-  trainingLocation: string
-  budgetRange: string
-  additionalRequirements: string
+  organization: string
+  jobTitle: string
+  programId: string
+  sessionId: string
+  learningMode: string
 }
 
 const INITIAL: FormData = {
-  organizationName: '', industry: '', contactPerson: '', position: '',
-  email: '', phoneNumber: '', numberOfParticipants: '', trainingTopic: '',
-  preferredDeliveryMethod: '', preferredDates: '', trainingLocation: '',
-  budgetRange: '', additionalRequirements: '',
+  fullName: '', email: '', phoneNumber: '', organization: '', jobTitle: '',
+  programId: '', sessionId: '', learningMode: 'Physical'
 }
 
 const inputStyle: React.CSSProperties = {
@@ -58,13 +46,69 @@ function Field({ label, required, children }: { label: string; required?: boolea
   )
 }
 
-export default function RequestTrainingForm() {
+function FormStateUpdater({ 
+  setForm, 
+  programs, 
+  cohorts 
+}: { 
+  setForm: React.Dispatch<React.SetStateAction<FormData>>, 
+  programs: Program[], 
+  cohorts: Cohort[] 
+}) {
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    const programParam = searchParams.get('program')
+    const cohortParam = searchParams.get('cohort')
+    
+    // We try to match by title (case-insensitive) or by ID
+    let foundProgramId = ''
+    if (programParam) {
+      const p = programs.find(p => p.title.toLowerCase() === programParam.toLowerCase() || p.id === programParam)
+      if (p) foundProgramId = p.id
+    }
+
+    let foundSessionId = ''
+    if (foundProgramId && cohortParam) {
+      // Find a cohort for this program whose formatted title or id matches the param
+      const available = cohorts.filter(c => c.program_id === foundProgramId)
+      // The URL usually passes something like "October 2026 Leadership Cohort"
+      // Wait, since we don't have the title in the cohort object, let's just find the first available cohort, 
+      // or match by ID if it's passed.
+      const match = available.find(c => c.id === cohortParam)
+      if (match) {
+        foundSessionId = match.id
+      } else if (available.length > 0) {
+        // If we can't match by ID (because URL passes string title), just pick the first available cohort for now
+        // to save the user from having to select it manually if there's an obvious one.
+        foundSessionId = available[0].id
+      }
+    }
+
+    setForm(prev => {
+      const next = { ...prev }
+      if (foundProgramId) next.programId = foundProgramId
+      if (foundSessionId) next.sessionId = foundSessionId
+      return next
+    })
+  }, [searchParams, programs, cohorts, setForm])
+
+  return null
+}
+
+export default function RequestTrainingForm({ programs, cohorts }: { programs: Program[], cohorts: Cohort[] }) {
   const [form, setForm] = useState<FormData>(INITIAL)
   const [errors, setErrors] = useState<Partial<FormData>>({})
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
 
   const set = (key: keyof FormData) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
-    setForm(prev => ({ ...prev, [key]: e.target.value }))
+    setForm(prev => {
+      const next = { ...prev, [key]: e.target.value }
+      if (key === 'programId') {
+        next.sessionId = '' // reset session when program changes
+      }
+      return next
+    })
 
   const focus = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     (e.currentTarget as HTMLElement).style.borderColor = '#0077B6'
@@ -75,8 +119,8 @@ export default function RequestTrainingForm() {
 
   const validate = (): boolean => {
     const errs: Partial<FormData> = {}
-    const required: (keyof FormData)[] = ['organizationName', 'industry', 'contactPerson', 'position', 'email', 'phoneNumber', 'numberOfParticipants', 'trainingTopic', 'preferredDeliveryMethod']
-    required.forEach(k => { if (!form[k].trim()) errs[k] = 'This field is required' })
+    const required: (keyof FormData)[] = ['fullName', 'email', 'phoneNumber', 'organization', 'jobTitle', 'programId', 'sessionId', 'learningMode']
+    required.forEach(k => { if (!form[k]?.trim()) errs[k] = 'This field is required' })
     if (form.email && !/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Enter a valid email address'
     setErrors(errs)
     return Object.keys(errs).length === 0
@@ -87,19 +131,18 @@ export default function RequestTrainingForm() {
     if (!validate()) return
     setStatus('loading')
     try {
-      await fetch('https://formsubmit.co/ajax/kimsako22@gmail.com', {
+      const res = await fetch('/api/applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          _subject: `Training Request from ${form.organizationName}`,
-          ...form
-        })
+        body: JSON.stringify(form)
       })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.details || data.error || 'Submission failed')
       setStatus('success')
-    } catch (error) {
+    } catch (error: any) {
       console.error(error)
       setStatus('idle')
-      alert("Failed to send request. Please try again.")
+      alert(`Failed to send request: ${error.message}`)
     }
   }
 
@@ -108,10 +151,10 @@ export default function RequestTrainingForm() {
       <div style={{ textAlign: 'center', padding: '80px 24px' }}>
         <CheckCircle size={56} style={{ color: '#2ECC40', marginBottom: '20px' }} strokeWidth={1.5} />
         <h2 style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '28px', color: '#1D2430', margin: '0 0 12px' }}>
-          Request received
+          Application received
         </h2>
         <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '17px', lineHeight: 1.65, color: '#5C6B7A', maxWidth: '480px', margin: '0 auto 28px' }}>
-          Thank you, {form.contactPerson}. A member of our training consultancy team will contact you within two working days to discuss your requirements.
+          Thank you, {form.fullName}. Your application has been received successfully. Our admissions team will review it shortly.
         </p>
         <button
           onClick={() => { setForm(INITIAL); setStatus('idle') }}
@@ -120,57 +163,31 @@ export default function RequestTrainingForm() {
             fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '14px', cursor: 'pointer',
           }}
         >
-          Submit Another Request
+          Submit Another Application
         </button>
       </div>
     )
   }
 
+  const availableCohorts = cohorts.filter(c => c.program_id === form.programId)
+
   return (
     <form onSubmit={handleSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-      {/* Section 1 — Organization */}
+      <Suspense fallback={null}>
+        <FormStateUpdater setForm={setForm} programs={programs} cohorts={cohorts} />
+      </Suspense>
+      
+      {/* Applicant Details */}
       <fieldset style={{ border: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <legend style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '17px', color: '#1D2430', paddingBottom: '16px', borderBottom: '2px solid #DDE4EC', width: '100%', marginBottom: '4px' }}>
-          Organization Details
+          Applicant Details
         </legend>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }} className="form-grid-2">
-          <Field label="Organization Name" required>
-            <input id="organizationName" type="text" value={form.organizationName} onChange={set('organizationName')}
+          <Field label="Full Name" required>
+            <input type="text" value={form.fullName} onChange={set('fullName')}
               onFocus={focus} onBlur={blur}
-              style={{ ...inputStyle, borderColor: errors.organizationName ? '#DC2626' : '#DDE4EC' }}
-              aria-required aria-describedby={errors.organizationName ? 'err-org' : undefined} />
-            {errors.organizationName && <span id="err-org" role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.organizationName}</span>}
-          </Field>
-          <Field label="Industry" required>
-            <select id="industry" value={form.industry} onChange={set('industry')}
-              onFocus={focus} onBlur={blur}
-              style={{ ...inputStyle, borderColor: errors.industry ? '#DC2626' : '#DDE4EC', appearance: 'none', cursor: 'pointer' }}
-              aria-required>
-              <option value="">Select industry</option>
-              {INDUSTRIES.map(i => <option key={i} value={i}>{i}</option>)}
-            </select>
-            {errors.industry && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.industry}</span>}
-          </Field>
-        </div>
-      </fieldset>
-
-      {/* Section 2 — Contact Person */}
-      <fieldset style={{ border: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <legend style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '17px', color: '#1D2430', paddingBottom: '16px', borderBottom: '2px solid #DDE4EC', width: '100%', marginBottom: '4px' }}>
-          Contact Person
-        </legend>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }} className="form-grid-2">
-          <Field label="Contact Person" required>
-            <input type="text" value={form.contactPerson} onChange={set('contactPerson')}
-              onFocus={focus} onBlur={blur}
-              style={{ ...inputStyle, borderColor: errors.contactPerson ? '#DC2626' : '#DDE4EC' }} aria-required />
-            {errors.contactPerson && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.contactPerson}</span>}
-          </Field>
-          <Field label="Position / Title" required>
-            <input type="text" value={form.position} onChange={set('position')}
-              onFocus={focus} onBlur={blur}
-              style={{ ...inputStyle, borderColor: errors.position ? '#DC2626' : '#DDE4EC' }} aria-required />
-            {errors.position && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.position}</span>}
+              style={{ ...inputStyle, borderColor: errors.fullName ? '#DC2626' : '#DDE4EC' }} aria-required />
+            {errors.fullName && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.fullName}</span>}
           </Field>
           <Field label="Email Address" required>
             <input type="email" value={form.email} onChange={set('email')}
@@ -187,73 +204,65 @@ export default function RequestTrainingForm() {
         </div>
       </fieldset>
 
-      {/* Section 3 — Training Requirements */}
+      {/* Professional Details */}
       <fieldset style={{ border: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <legend style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '17px', color: '#1D2430', paddingBottom: '16px', borderBottom: '2px solid #DDE4EC', width: '100%', marginBottom: '4px' }}>
-          Training Requirements
+          Professional Details
         </legend>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }} className="form-grid-2">
-          <Field label="Number of Participants" required>
-            <input type="number" min={1} value={form.numberOfParticipants} onChange={set('numberOfParticipants')}
+          <Field label="Organization" required>
+            <input type="text" value={form.organization} onChange={set('organization')}
               onFocus={focus} onBlur={blur}
-              style={{ ...inputStyle, borderColor: errors.numberOfParticipants ? '#DC2626' : '#DDE4EC' }} aria-required />
-            {errors.numberOfParticipants && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.numberOfParticipants}</span>}
+              style={{ ...inputStyle, borderColor: errors.organization ? '#DC2626' : '#DDE4EC' }} aria-required />
+            {errors.organization && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.organization}</span>}
           </Field>
-          <Field label="Preferred Delivery Method" required>
-            <select value={form.preferredDeliveryMethod} onChange={set('preferredDeliveryMethod')}
+          <Field label="Job Title" required>
+            <input type="text" value={form.jobTitle} onChange={set('jobTitle')}
               onFocus={focus} onBlur={blur}
-              style={{ ...inputStyle, borderColor: errors.preferredDeliveryMethod ? '#DC2626' : '#DDE4EC', appearance: 'none', cursor: 'pointer' }} aria-required>
-              <option value="">Select delivery method</option>
-              {DELIVERY_METHODS.map(m => <option key={m} value={m}>{m}</option>)}
-            </select>
-            {errors.preferredDeliveryMethod && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.preferredDeliveryMethod}</span>}
+              style={{ ...inputStyle, borderColor: errors.jobTitle ? '#DC2626' : '#DDE4EC' }} aria-required />
+            {errors.jobTitle && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.jobTitle}</span>}
           </Field>
         </div>
-
-        <Field label="Training Topic / Program of Interest" required>
-          <input type="text" value={form.trainingTopic} onChange={set('trainingTopic')}
-            onFocus={focus} onBlur={blur} placeholder="e.g. Leadership Development, Customer Service Excellence, Banking Compliance…"
-            style={{ ...inputStyle, borderColor: errors.trainingTopic ? '#DC2626' : '#DDE4EC' }} aria-required />
-          {errors.trainingTopic && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.trainingTopic}</span>}
-        </Field>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }} className="form-grid-2">
-          <Field label="Preferred Dates">
-            <input type="text" value={form.preferredDates} onChange={set('preferredDates')}
-              onFocus={focus} onBlur={blur} placeholder="e.g. July 2026, Q3 2026, flexible"
-              style={inputStyle} />
-          </Field>
-          <Field label="Training Location">
-            <input type="text" value={form.trainingLocation} onChange={set('trainingLocation')}
-              onFocus={focus} onBlur={blur} placeholder="City, venue, or 'at our premises'"
-              style={inputStyle} />
-          </Field>
-        </div>
-
-        <Field label="Approximate Budget Range">
-          <select value={form.budgetRange} onChange={set('budgetRange')}
-            onFocus={focus} onBlur={blur}
-            style={{ ...inputStyle, appearance: 'none', cursor: 'pointer' }}>
-            <option value="">Select range (optional)</option>
-            {BUDGET_RANGES.map(b => <option key={b} value={b}>{b}</option>)}
-          </select>
-        </Field>
-
-        <Field label="Additional Requirements or Context">
-          <textarea
-            value={form.additionalRequirements}
-            onChange={set('additionalRequirements')}
-            onFocus={focus} onBlur={blur}
-            rows={5}
-            placeholder="Describe any specific objectives, audience characteristics, past training history, or other context that would help us design the right program."
-            style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.65 }}
-          />
-        </Field>
       </fieldset>
 
-      {/* Required note */}
+      {/* Program Selection */}
+      <fieldset style={{ border: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <legend style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '17px', color: '#1D2430', paddingBottom: '16px', borderBottom: '2px solid #DDE4EC', width: '100%', marginBottom: '4px' }}>
+          Training Selection
+        </legend>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }} className="form-grid-2">
+          <Field label="Program" required>
+            <select value={form.programId} onChange={set('programId')}
+              onFocus={focus} onBlur={blur}
+              style={{ ...inputStyle, borderColor: errors.programId ? '#DC2626' : '#DDE4EC', cursor: 'pointer' }} aria-required>
+              <option value="">Select a program</option>
+              {programs.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
+            </select>
+            {errors.programId && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.programId}</span>}
+          </Field>
+          <Field label="Session" required>
+            <select value={form.sessionId} onChange={set('sessionId')} disabled={!form.programId}
+              onFocus={focus} onBlur={blur}
+              style={{ ...inputStyle, borderColor: errors.sessionId ? '#DC2626' : '#DDE4EC', cursor: form.programId ? 'pointer' : 'not-allowed', opacity: form.programId ? 1 : 0.6 }} aria-required>
+              <option value="">Select a session</option>
+              {availableCohorts.map(c => <option key={c.id} value={c.id}>{new Date(c.start_date).toLocaleDateString()} — {c.location}</option>)}
+            </select>
+            {errors.sessionId && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.sessionId}</span>}
+          </Field>
+          <Field label="Learning Mode" required>
+            <select value={form.learningMode} onChange={set('learningMode')}
+              onFocus={focus} onBlur={blur}
+              style={{ ...inputStyle, borderColor: errors.learningMode ? '#DC2626' : '#DDE4EC', cursor: 'pointer' }} aria-required>
+              <option value="Physical">Physical (In-Person)</option>
+              <option value="Online">Online / Virtual</option>
+            </select>
+            {errors.learningMode && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.learningMode}</span>}
+          </Field>
+        </div>
+      </fieldset>
+
       <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '13px', color: '#5C6B7A', margin: 0 }}>
-        <span style={{ color: '#DC2626' }}>*</span> Required fields. We will respond within two working days.
+        <span style={{ color: '#DC2626' }}>*</span> Required fields. We will review your application and respond shortly.
       </p>
 
       {/* Submit */}
@@ -273,7 +282,7 @@ export default function RequestTrainingForm() {
           onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0077B6' }}
         >
           <Send size={16} />
-          {status === 'loading' ? 'Submitting…' : 'Submit Training Request'}
+          {status === 'loading' ? 'Submitting…' : 'Submit Application'}
         </button>
       </div>
 

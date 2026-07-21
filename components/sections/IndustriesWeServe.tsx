@@ -165,7 +165,7 @@ export default function IndustriesWeServe() {
                           fontSize: '14px',
                           color: isActive ? '#4DD0E1' : 'rgba(255,255,255,0.75)',
                           transition: 'all 0.25s ease',
-                          textDecoration: isActive ? 'underline' : 'none',
+                          textDecorationLine: isActive ? 'underline' : 'none',
                           textDecorationColor: '#4DD0E1',
                           textUnderlineOffset: '3px',
                         }}>

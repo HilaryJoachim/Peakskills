@@ -61,12 +61,12 @@ interface RegisterFormProps {
 }
 
 export default function RegisterForm({ initialProgramName = '', initialSessionDate = '', initialLocation = '' }: RegisterFormProps) {
-  const isSessionValid = !!initialSessionDate
+  const isSessionValid = true // Allow registration even if no session is currently scheduled
 
   const [form, setForm] = useState<FormData>({
     ...INITIAL,
     programName: initialProgramName,
-    sessionDate: initialSessionDate || 'No session selected'
+    sessionDate: initialSessionDate || 'To Be Announced (Register Interest)'
   })
   const [errors, setErrors] = useState<Partial<FormData>>({})
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
@@ -160,8 +160,8 @@ export default function RegisterForm({ initialProgramName = '', initialSessionDa
           </Field>
           <Field label="Session Date">
             <input type="text" value={form.sessionDate} readOnly
-              style={{ ...readOnlyStyle, color: isSessionValid ? '#5C6B7A' : '#DC2626' }} />
-            {initialLocation && isSessionValid && (
+              style={{ ...readOnlyStyle, color: initialSessionDate ? '#5C6B7A' : '#F59E0B' }} />
+            {initialLocation && (
               <p style={{ margin: '6px 0 0', fontFamily: 'Source Sans 3, sans-serif', fontSize: '13px', color: '#5C6B7A' }}>
                 {initialLocation}
               </p>
@@ -231,17 +231,17 @@ export default function RegisterForm({ initialProgramName = '', initialSessionDa
       <div>
         <button
           type="submit"
-          disabled={status === 'loading' || !isSessionValid}
+          disabled={status === 'loading'}
           style={{
-            background: !isSessionValid ? '#A9B4C2' : '#0077B6', color: '#fff',
+            background: status === 'loading' ? '#A9B4C2' : '#0077B6', color: '#fff',
             padding: '14px 32px', borderRadius: '6px', border: 'none',
             fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '16px',
-            cursor: status === 'loading' ? 'wait' : (!isSessionValid ? 'not-allowed' : 'pointer'),
+            cursor: status === 'loading' ? 'wait' : 'pointer',
             display: 'inline-flex', alignItems: 'center', gap: '8px',
             transition: 'background 0.15s',
           }}
-          onMouseEnter={e => { if (status !== 'loading' && isSessionValid) (e.currentTarget as HTMLElement).style.background = '#005F8E' }}
-          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0077B6' }}
+          onMouseEnter={e => { if (status !== 'loading') (e.currentTarget as HTMLElement).style.background = '#005F8E' }}
+          onMouseLeave={e => { if (status !== 'loading') (e.currentTarget as HTMLElement).style.background = '#0077B6' }}
         >
           <Send size={16} />
           {status === 'loading' ? 'Submitting…' : 'Submit Registration'}
