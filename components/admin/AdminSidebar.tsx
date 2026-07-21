@@ -13,7 +13,9 @@ import {
   Settings,
   LogOut,
   ChevronRight,
-  ClipboardList
+  ClipboardList,
+  Menu,
+  X
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -31,18 +33,78 @@ export default function AdminSidebar() {
   const pathname = usePathname()
   const [hoveredLink, setHoveredLink] = useState<string | null>(null)
   const [isLogoutHovered, setIsLogoutHovered] = useState(false)
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
 
   return (
-    <div style={{ width: '260px', flexShrink: 0 }}>
-      <aside
-        style={{
-          width: '260px',
-          background: '#0B1120', // Dark premium background
-          borderRight: '1px solid rgba(255,255,255,0.03)',
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100vh',
-          position: 'fixed',
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        .admin-sidebar-spacer {
+          width: 260px;
+          flex-shrink: 0;
+          transition: width 0.3s ease;
+        }
+        .admin-sidebar-aside {
+          transform: translateX(0);
+          transition: transform 0.3s ease;
+        }
+        .admin-mobile-menu-btn {
+          display: none;
+        }
+        .admin-mobile-overlay {
+          display: none;
+        }
+        @media (max-width: 768px) {
+          .admin-sidebar-spacer {
+            width: 0 !important;
+          }
+          .admin-sidebar-aside {
+            transform: translateX(${isMobileOpen ? '0' : '-100%'});
+          }
+          .admin-mobile-menu-btn {
+            display: flex !important;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 50;
+            background: #1D2430;
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+          }
+          .admin-mobile-overlay {
+            display: ${isMobileOpen ? 'block' : 'none'};
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 35;
+          }
+        }
+      `}} />
+      
+      <button className="admin-mobile-menu-btn" onClick={() => setIsMobileOpen(!isMobileOpen)}>
+        {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
+      </button>
+      
+      <div className="admin-mobile-overlay" onClick={() => setIsMobileOpen(false)} />
+
+      <div className="admin-sidebar-spacer">
+        <aside
+          className="admin-sidebar-aside"
+          style={{
+            width: '260px',
+            background: '#0B1120',
+            borderRight: '1px solid rgba(255,255,255,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100vh',
+            position: 'fixed',
           top: 0,
           left: 0,
           zIndex: 40,
@@ -175,5 +237,6 @@ export default function AdminSidebar() {
         </div>
       </aside>
     </div>
+    </>
   )
 }

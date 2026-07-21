@@ -12,6 +12,8 @@ import {
   Settings,
   LogOut,
   ChevronRight,
+  Menu,
+  X
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
@@ -28,6 +30,7 @@ export default function Sidebar({ studentName = 'Student', studentId = '', fullS
   const [hoveredLink, setHoveredLink] = useState<string | null>(null)
   const [isLogoutHovered, setIsLogoutHovered] = useState(false)
   const [avatar, setAvatar] = useState<string | null>(null)
+  const [isMobileOpen, setIsMobileOpen] = useState(false)
 
   useEffect(() => {
     const idToUse = fullStudentId || studentId
@@ -48,22 +51,81 @@ export default function Sidebar({ studentName = 'Student', studentId = '', fullS
   }, [fullStudentId, studentId])
 
   return (
-    <div style={{ width: '260px', flexShrink: 0 }}>
-      <aside
-        style={{
-          width: '260px',
-          background: '#0B1120', // Dark premium background
-          borderRight: '1px solid rgba(255,255,255,0.03)',
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100vh',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          zIndex: 40,
-          boxShadow: '4px 0 24px rgba(0,0,0,0.2)',
-        }}
-      >
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        .sidebar-spacer {
+          width: 260px;
+          flex-shrink: 0;
+          transition: width 0.3s ease;
+        }
+        .sidebar-aside {
+          transform: translateX(0);
+          transition: transform 0.3s ease;
+        }
+        .mobile-menu-btn {
+          display: none;
+        }
+        .mobile-overlay {
+          display: none;
+        }
+        @media (max-width: 768px) {
+          .sidebar-spacer {
+            width: 0 !important;
+          }
+          .sidebar-aside {
+            transform: translateX(${isMobileOpen ? '0' : '-100%'});
+          }
+          .mobile-menu-btn {
+            display: flex !important;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 50;
+            background: #1D2430;
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+          }
+          .mobile-overlay {
+            display: ${isMobileOpen ? 'block' : 'none'};
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            z-index: 35;
+          }
+        }
+      `}} />
+      
+      <button className="mobile-menu-btn" onClick={() => setIsMobileOpen(!isMobileOpen)}>
+        {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
+      </button>
+      
+      <div className="mobile-overlay" onClick={() => setIsMobileOpen(false)} />
+
+      <div className="sidebar-spacer">
+        <aside
+          className="sidebar-aside"
+          style={{
+            width: '260px',
+            background: '#0B1120', // Dark premium background
+            borderRight: '1px solid rgba(255,255,255,0.03)',
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100vh',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 40,
+            boxShadow: '4px 0 24px rgba(0,0,0,0.2)',
+          }}
+        >
       {/* Logo */}
       <div style={{ padding: '24px 24px 32px' }}>
         <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
@@ -189,7 +251,8 @@ export default function Sidebar({ studentName = 'Student', studentId = '', fullS
           Log Out
         </Link>
       </div>
-    </aside>
+      </aside>
     </div>
+    </>
   )
 }

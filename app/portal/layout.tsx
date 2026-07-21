@@ -111,8 +111,28 @@ export default async function PortalLayout({ children }: { children: React.React
         {isAwaitingPayment && (
           <PaymentBanner daysRemaining={daysRemaining} />
         )}
+        
+        <style dangerouslySetInnerHTML={{__html: `
+          .portal-header {
+            height: 72px;
+            background: #ffffff;
+            border-bottom: 1px solid #EEF1F5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+          }
+          @media (max-width: 768px) {
+            .portal-header {
+              padding-left: 64px;
+            }
+          }
+        `}} />
 
-        <header style={{ height: '72px', background: '#ffffff', borderBottom: '1px solid #EEF1F5', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 32px', position: 'sticky', top: 0, zIndex: 30 }}>
+        <header className="portal-header">
           <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 800, fontSize: '18px', color: '#1D2430' }}>
             {student?.applications?.program?.title || 'Student Portal'}
           </div>
@@ -137,7 +157,26 @@ function renderNormalLayout(children: React.ReactNode) {
       <IdleTimeout />
       <Sidebar />
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowX: 'hidden' }}>
-        <header style={{ height: '72px', background: '#ffffff', borderBottom: '1px solid #EEF1F5', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 32px', position: 'sticky', top: 0, zIndex: 30 }}>
+        <style dangerouslySetInnerHTML={{__html: `
+          .portal-header-normal {
+            height: 72px;
+            background: #ffffff;
+            border-bottom: 1px solid #EEF1F5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+          }
+          @media (max-width: 768px) {
+            .portal-header-normal {
+              padding-left: 64px;
+            }
+          }
+        `}} />
+        <header className="portal-header-normal">
           <div style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 800, fontSize: '18px', color: '#1D2430' }}>
             Student Portal
           </div>

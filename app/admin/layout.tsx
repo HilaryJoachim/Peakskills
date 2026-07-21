@@ -31,23 +31,30 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       {/* Main Content Area */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowX: 'hidden' }}>
         
+        <style dangerouslySetInnerHTML={{__html: `
+          .admin-header {
+            height: 72px;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 30;
+          }
+          @media (max-width: 768px) {
+            .admin-header {
+              padding-left: 64px;
+            }
+          }
+        `}} />
+
         {/* Top Header */}
-        <header
-          style={{
-            height: '72px',
-            background: 'rgba(15, 23, 42, 0.4)',
-            backdropFilter: 'blur(16px)',
-            WebkitBackdropFilter: 'blur(16px)',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '0 32px',
-            position: 'sticky',
-            top: 0,
-            zIndex: 30,
-          }}
-        >
+        <header className="admin-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <h2 style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 800, fontSize: '18px', color: '#F8FAFC', margin: 0 }}>
               Administration
