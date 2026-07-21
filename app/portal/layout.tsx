@@ -75,33 +75,6 @@ export default async function PortalLayout({ children }: { children: React.React
   const studentName = appData?.full_name || 'Student'
   const studentId = student.id
 
-  const dummyNotifications: NotificationItem[] = [
-    {
-      id: '1',
-      title: 'New Session Scheduled',
-      message: 'A new Live Session has been scheduled for tomorrow.',
-      href: '/portal/schedule',
-      isRead: false,
-      date: '2 hours ago'
-    },
-    {
-      id: '2',
-      title: 'Course Material Added',
-      message: 'Admin uploaded new course material. Click to view.',
-      href: '/portal/classes',
-      isRead: false,
-      date: '1 day ago'
-    },
-    {
-      id: '3',
-      title: 'New Assignment',
-      message: 'A new assignment has been added to your program.',
-      href: '/portal/classes',
-      isRead: false,
-      date: '2 days ago'
-    }
-  ]
-
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#F4F7FA' }}>
       <IdleTimeout />
@@ -137,7 +110,7 @@ export default async function PortalLayout({ children }: { children: React.React
             {student?.applications?.program?.title || 'Student Portal'}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-            <NotificationBell initialNotifications={dummyNotifications} />
+            <NotificationBell initialNotifications={[]} />
           </div>
         </header>
 
