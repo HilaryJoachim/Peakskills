@@ -204,7 +204,7 @@ export default function AdminSidebar() {
                 Administrator
               </p>
               <p style={{ margin: 0, fontFamily: 'Source Sans 3, sans-serif', fontSize: '12px', color: '#64748B' }}>
-                admin@peakskills.com
+                kimsako22@gmail.com
               </p>
             </div>
           </div>

@@ -10,7 +10,7 @@ export async function POST(request: Request) {
       programId, sessionId, learningMode, participantsCount
     } = body
 
-    if (!fullName || !email || !phoneNumber || !organization || !jobTitle || !programId || !sessionId || !learningMode) {
+    if (!fullName || !email || !phoneNumber || !organization || !jobTitle || !programId || !learningMode) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       organization,
       job_title: jobTitle,
       program_id: programId,
-      session_id: sessionId,
+      session_id: sessionId || null,
       learning_mode: learningMode,
       participants_count: participantsCount ? parseInt(participantsCount, 10) : 1,
       status: 'Application Submitted'

@@ -61,7 +61,7 @@ export default function FeaturedPrograms({ programs }: FeaturedProgramsProps) {
         {programs.length > 0 ? (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 320px), 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
             gap: '24px',
           }}>
             {programs.map((program) => (

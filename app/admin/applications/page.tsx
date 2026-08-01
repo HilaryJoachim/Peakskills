@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Search, Filter, Check, X, Eye, FileText } from 'lucide-react'
-import { getApplications, approveApplication, rejectApplication, markAsPaid } from './actions'
+import { Search, Filter, Check, X, Eye, FileText, Archive } from 'lucide-react'
+import { getApplications, approveApplication, rejectApplication, markAsPaid, archiveApplication } from './actions'
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState<any[]>([])
@@ -41,6 +41,12 @@ export default function ApplicationsPage() {
 
   async function handleMarkAsPaid(id: string) {
     await markAsPaid(id)
+    setSelectedApp(null)
+    loadData()
+  }
+
+  async function handleArchive(id: string) {
+    await archiveApplication(id)
     setSelectedApp(null)
     loadData()
   }
@@ -115,6 +121,7 @@ export default function ApplicationsPage() {
                     if (finalStatus === 'Application Submitted' || finalStatus === 'Under Review') { bg = '#FFFBEB'; color = '#D97706' }
                     else if (finalStatus === 'Approved - Awaiting Payment') { bg = '#ECFDF5'; color = '#059669' }
                     else if (finalStatus === 'Active Student') { bg = '#EFF6FF'; color = '#2563EB' }
+                    else if (finalStatus === 'Archived') { bg = 'rgba(255,255,255,0.05)'; color = '#94A3B8' }
                     return (
                       <span style={{ 
                         padding: '4px 8px', borderRadius: '12px', fontSize: '12px', fontWeight: 600,
@@ -198,6 +205,12 @@ export default function ApplicationsPage() {
                   return (
                     <button onClick={() => handleMarkAsPaid(selectedApp.id)} style={{ width: '100%', padding: '12px', borderRadius: '8px', background: '#3B82F6', color: '#fff', border: 'none', fontWeight: 600, fontSize: '15px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
                       <Check size={18} /> Mark as Paid
+                    </button>
+                  )
+                } else if (currentStatus === 'Rejected') {
+                  return (
+                    <button onClick={() => handleArchive(selectedApp.id)} style={{ width: '100%', padding: '12px', borderRadius: '8px', background: 'transparent', color: '#94A3B8', border: '1px solid #94A3B8', fontWeight: 600, fontSize: '15px', cursor: 'pointer', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+                      <Archive size={18} /> Archive Application
                     </button>
                   )
                 } else {

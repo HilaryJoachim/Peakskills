@@ -98,6 +98,7 @@ export default function AdminDashboard() {
                       if (finalStatus === 'Application Submitted' || finalStatus === 'Under Review') { bg = '#FFFBEB'; color = '#D97706' }
                       else if (finalStatus === 'Approved' || finalStatus === 'Approved - Awaiting Payment') { bg = '#ECFDF5'; color = '#059669' }
                       else if (finalStatus === 'Active Student') { bg = '#EFF6FF'; color = '#2563EB' }
+                      else if (finalStatus === 'Archived') { bg = 'rgba(255,255,255,0.05)'; color = '#94A3B8' }
                       return (
                         <span style={{ 
                           padding: '4px 8px', borderRadius: '12px', fontSize: '12px', fontWeight: 600,

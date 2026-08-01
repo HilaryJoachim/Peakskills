@@ -10,6 +10,7 @@ export async function getApplications() {
   const { data, error } = await supabase
     .from('applications')
     .select('*, program:programs(title), session:cohorts(start_date), student:students(status, payment_status)')
+    .neq('status', 'Archived')
     .order('submitted_at', { ascending: false })
   
   if (error) {
@@ -106,6 +107,23 @@ export async function markAsPaid(appId: string) {
   if (error) {
     console.error('Error updating student to paid:', error)
     throw new Error('Failed to mark as paid')
+  }
+
+  revalidatePath('/admin/applications')
+  revalidatePath('/admin')
+}
+
+export async function archiveApplication(appId: string) {
+  if (!supabase) return
+  
+  const { error } = await supabase
+    .from('applications')
+    .update({ status: 'Archived' })
+    .eq('id', appId)
+
+  if (error) {
+    console.error('Error archiving application:', error)
+    throw new Error('Failed to archive application')
   }
 
   revalidatePath('/admin/applications')

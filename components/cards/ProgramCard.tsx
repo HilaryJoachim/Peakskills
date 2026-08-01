@@ -119,7 +119,7 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
       <div style={{
         position: 'relative',
         overflow: 'hidden',
-        height: listView ? '100%' : '160px',
+        height: listView ? '100%' : '140px',
         width: listView ? '220px' : '100%',
         flexShrink: 0,
       }}>
@@ -143,7 +143,7 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
         display: 'flex',
         flexDirection: 'column',
         flex: 1,
-        padding: '14px 16px 16px',
+        padding: '12px 14px 14px',
         gap: '0',
       }}>
 
@@ -189,88 +189,55 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
         <h3 style={{
           fontFamily: 'IBM Plex Sans, sans-serif',
           fontWeight: 700,
-          fontSize: '16px',
+          fontSize: '15px',
           lineHeight: 1.3,
           color: '#1D2430',
-          margin: '0 0 8px',
+          margin: '0 0 12px',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          minHeight: '39px', // Ensures title always takes 2 lines of space for alignment
         }}>
           {program.title}
         </h3>
 
-        {/* ── Description (4 lines) ── */}
-        <p style={{
-          fontFamily: 'Source Sans 3, sans-serif',
-          fontSize: '14px',
-          lineHeight: 1.5,
-          color: '#5C6B7A',
-          margin: '0 0 16px',
-          display: '-webkit-box',
-          WebkitLineClamp: 4,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          minHeight: '84px' // 14px * 1.5 = 21px per line * 4 lines = 84px
-        }}>
-          {program.short_description || 'This comprehensive program equips you with essential skills and practical knowledge to excel in your role. Join our expert-led sessions to transform your career and achieve your professional goals.'}
-        </p>
-
         {/* ── Meta: location / duration / seats ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px', minHeight: '66px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '12px', minHeight: '58px' }}>
           {nextCohort?.location && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#5C6B7A', fontFamily: 'Source Sans 3, sans-serif' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#5C6B7A', fontFamily: 'Source Sans 3, sans-serif' }}>
               <PinIcon />
               {nextCohort.location}
             </span>
           )}
-          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#5C6B7A', fontFamily: 'Source Sans 3, sans-serif' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#5C6B7A', fontFamily: 'Source Sans 3, sans-serif' }}>
             <ClockIcon />
             {program.duration_days} {program.duration_days === 1 ? 'Day' : 'Days'} · {formatLabel}
           </span>
           {nextCohort?.seats_available != null && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', color: '#5C6B7A', fontFamily: 'Source Sans 3, sans-serif' }}>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: '#5C6B7A', fontFamily: 'Source Sans 3, sans-serif' }}>
               <SeatsIcon />
               {nextCohort.seats_available} seats available
             </span>
           )}
         </div>
 
-        {/* ── Start → End date boxes ── */}
+        {/* ── Next Cohort Date ── */}
         {nextCohort ? (
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
+            justifyContent: 'center',
             marginBottom: '12px',
+            background: '#F4F7FA',
+            borderRadius: '6px',
+            padding: '6px 8px',
           }}>
-            <div style={{
-              flex: 1,
-              background: '#F4F7FA',
-              borderRadius: '8px',
-              padding: '7px 10px',
-              textAlign: 'center',
-            }}>
-              <p style={{ margin: '0 0 1px', fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '9px', color: '#5C6B7A', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Start</p>
-              <p style={{ margin: 0, fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '12px', color: '#1D2430' }}>
-                {formatDateShort(nextCohort.start_date)}
-              </p>
-            </div>
-            {/* Arrow */}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A9B4C2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"/>
-              <polyline points="12 5 19 12 12 19"/>
-            </svg>
-            <div style={{
-              flex: 1,
-              background: '#F4F7FA',
-              borderRadius: '8px',
-              padding: '7px 10px',
-              textAlign: 'center',
-            }}>
-              <p style={{ margin: '0 0 1px', fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '9px', color: '#5C6B7A', textTransform: 'uppercase', letterSpacing: '0.08em' }}>End</p>
-              <p style={{ margin: 0, fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '12px', color: '#1D2430' }}>
-                {formatDateShort(nextCohort.end_date)}
-              </p>
-            </div>
+            <span style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '12px', color: '#5C6B7A', marginRight: '6px' }}>Upcoming:</span>
+            <p style={{ margin: 0, fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '12px', color: '#1D2430' }}>
+              {formatDateShort(nextCohort.start_date)} – {formatDateShort(nextCohort.end_date)}
+            </p>
           </div>
         ) : (
           <div style={{
@@ -279,12 +246,10 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
             justifyContent: 'center',
             marginBottom: '12px',
             background: '#F4F7FA',
-            borderRadius: '8px',
-            padding: '7px 10px',
-            height: '46px',
-            boxSizing: 'border-box'
+            borderRadius: '6px',
+            padding: '6px 8px',
           }}>
-            <p style={{ margin: 0, fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '13px', color: '#5C6B7A' }}>
+            <p style={{ margin: 0, fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '12px', color: '#5C6B7A' }}>
               {program.format === 'online' ? 'Available Anytime' : 'Dates to be announced'}
             </p>
           </div>
@@ -296,28 +261,28 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
         {/* ── Price row ── */}
         <div style={{
           borderTop: '1px solid #EEF1F5',
-          paddingTop: '10px',
+          paddingTop: '8px',
           marginBottom: '10px',
-          minHeight: '52px',
+          minHeight: '44px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center'
         }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
-            <span style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '13px', color: '#5C6B7A' }}>Per person</span>
-            <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '15px', color: '#1D2430' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px' }}>
+            <span style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '12px', color: '#5C6B7A' }}>Per person</span>
+            <span style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 700, fontSize: '14px', color: '#1D2430' }}>
               {program.price_type === 'free' ? 'Free' : formatPrice(program.price_per_person)}
             </span>
           </div>
           {program.price_type === 'paid' && (
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '13px', color: '#5C6B7A' }}>Corporate group rate</span>
+              <span style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '12px', color: '#5C6B7A' }}>Corporate group rate</span>
               <Link
                 href={`/contact?program=${program.slug}`}
                 style={{
                   fontFamily: 'IBM Plex Sans, sans-serif',
                   fontWeight: 600,
-                  fontSize: '13px',
+                  fontSize: '12px',
                   color: '#0FAFAF',
                   textDecoration: 'none',
                 }}
@@ -335,14 +300,14 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
             style={{
               flex: 1,
               textAlign: 'center',
-              padding: '9px 12px',
+              padding: '7px 10px',
               borderRadius: '8px',
               border: '1.5px solid #DDE4EC',
               background: 'transparent',
               color: '#1D2430',
               fontFamily: 'IBM Plex Sans, sans-serif',
               fontWeight: 600,
-              fontSize: '14px',
+              fontSize: '13px',
               textDecoration: 'none',
               transition: 'border-color 0.15s, background 0.15s',
               display: 'block',
@@ -366,13 +331,13 @@ export default function ProgramCard({ program, listView = false }: ProgramCardPr
             style={{
               flex: 1,
               textAlign: 'center',
-              padding: '9px 12px',
+              padding: '7px 10px',
               borderRadius: '8px',
               background: '#0FAFAF',
               color: '#ffffff',
               fontFamily: 'IBM Plex Sans, sans-serif',
               fontWeight: 600,
-              fontSize: '14px',
+              fontSize: '13px',
               textDecoration: 'none',
               transition: 'background 0.15s',
               display: 'block',

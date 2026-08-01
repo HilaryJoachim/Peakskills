@@ -16,27 +16,41 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Database not configured' }, { status: 500 })
     }
 
-    // Find the application by email to get the application_id
-    const { data: app, error: appError } = await supabase
+    // Find all applications by email
+    const { data: apps, error: appsError } = await supabase
       .from('applications')
       .select('id, email, full_name')
       .eq('email', email)
-      .single()
+      .order('submitted_at', { ascending: false })
 
-    if (appError || !app) {
+    if (appsError || !apps || apps.length === 0) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 })
     }
 
-    // Now find the student record associated with this application
-    const { data: student, error: studentError } = await supabase
-      .from('students')
-      .select('id, password_hash, status')
-      .eq('application_id', app.id)
-      .single()
+    let targetApp = null
+    let targetStudent = null
 
-    if (studentError || !student) {
+    // Check which application has an associated active student account
+    for (const app of apps) {
+      const { data: student, error: studentError } = await supabase
+        .from('students')
+        .select('id, password_hash, status')
+        .eq('application_id', app.id)
+        .single()
+
+      if (student && !studentError) {
+        targetApp = app
+        targetStudent = student
+        break
+      }
+    }
+
+    if (!targetApp || !targetStudent) {
       return NextResponse.json({ error: 'Student account not found or not approved' }, { status: 401 })
     }
+
+    const app = targetApp
+    const student = targetStudent
 
     if (!student.password_hash) {
       return NextResponse.json({ error: 'Account not activated. Please check your email for the activation link.' }, { status: 401 })

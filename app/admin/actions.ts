@@ -25,6 +25,7 @@ export async function getRecentApplications() {
   const { data } = await supabase
     .from('applications')
     .select('*, program:programs(title), student:students(status)')
+    .neq('status', 'Archived')
     .order('submitted_at', { ascending: false })
     .limit(5)
 

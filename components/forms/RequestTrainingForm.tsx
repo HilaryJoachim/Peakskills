@@ -119,7 +119,7 @@ export default function RequestTrainingForm({ programs, cohorts }: { programs: P
 
   const validate = (): boolean => {
     const errs: Partial<FormData> = {}
-    const required: (keyof FormData)[] = ['fullName', 'email', 'phoneNumber', 'organization', 'jobTitle', 'programId', 'sessionId', 'learningMode']
+    const required: (keyof FormData)[] = ['fullName', 'email', 'phoneNumber', 'organization', 'jobTitle', 'programId', 'learningMode']
     required.forEach(k => { if (!form[k]?.trim()) errs[k] = 'This field is required' })
     if (form.email && !/\S+@\S+\.\S+/.test(form.email)) errs.email = 'Enter a valid email address'
     setErrors(errs)
@@ -240,10 +240,10 @@ export default function RequestTrainingForm({ programs, cohorts }: { programs: P
             </select>
             {errors.programId && <span role="alert" style={{ fontSize: '13px', color: '#DC2626', marginTop: '4px', display: 'block' }}>{errors.programId}</span>}
           </Field>
-          <Field label="Session" required>
+          <Field label="Session">
             <select value={form.sessionId} onChange={set('sessionId')} disabled={!form.programId}
               onFocus={focus} onBlur={blur}
-              style={{ ...inputStyle, borderColor: errors.sessionId ? '#DC2626' : '#DDE4EC', cursor: form.programId ? 'pointer' : 'not-allowed', opacity: form.programId ? 1 : 0.6 }} aria-required>
+              style={{ ...inputStyle, borderColor: errors.sessionId ? '#DC2626' : '#DDE4EC', cursor: form.programId ? 'pointer' : 'not-allowed', opacity: form.programId ? 1 : 0.6 }}>
               <option value="">Select a session</option>
               {availableCohorts.map(c => <option key={c.id} value={c.id}>{new Date(c.start_date).toLocaleDateString()} — {c.location}</option>)}
             </select>

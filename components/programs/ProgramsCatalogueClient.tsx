@@ -276,7 +276,7 @@ export default function ProgramsCatalogueClient({ programs, categories }: Progra
         ) : (
           <div style={{
             display: 'grid',
-            gridTemplateColumns: view === 'list' ? '1fr' : 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
+            gridTemplateColumns: view === 'list' ? '1fr' : 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))',
             gap: '24px',
           }}>
             {filtered.map(program => (
