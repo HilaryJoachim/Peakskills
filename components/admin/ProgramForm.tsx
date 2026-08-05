@@ -184,7 +184,7 @@ export default function ProgramForm({ program, categories }: ProgramFormProps) {
           <label className="block text-sm font-medium text-slate-300 mb-2">Format</label>
           <select 
             value={format} 
-            onChange={(e) => setFormat(e.target.value)}
+            onChange={(e) => setFormat(e.target.value as 'in-person' | 'online' | 'hybrid')}
             className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-amber-500"
           >
             <option value="in-person">In Person</option>
@@ -197,7 +197,7 @@ export default function ProgramForm({ program, categories }: ProgramFormProps) {
             <label className="block text-sm font-medium text-slate-300 mb-2">Price Type</label>
             <select 
               value={priceType} 
-              onChange={(e) => setPriceType(e.target.value)}
+              onChange={(e) => setPriceType(e.target.value as 'paid' | 'free')}
               className="w-full bg-slate-800/50 border border-slate-700 rounded-lg px-4 py-2 text-slate-200 focus:outline-none focus:border-amber-500"
             >
               <option value="paid">Paid</option>
