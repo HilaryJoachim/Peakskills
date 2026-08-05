@@ -216,3 +216,12 @@ export async function getUpcomingCohorts(limit = 6) {
     .limit(limit)
   return data ?? []
 }
+
+export async function getGalleryItems() {
+  if (!isConfigured()) return []
+  const { data } = await supabase!
+    .from('gallery_items')
+    .select('*')
+    .order('event_date', { ascending: false })
+  return data ?? []
+}

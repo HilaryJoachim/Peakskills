@@ -4,110 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 // Link & AnimatedCounter removed — CTA and stats strip no longer displayed
 
 /* ─── Data ──────────────────────────────────────────────── */
-const TOP_EVENTS = [
-  {
-    id: 1,
-    title: 'Leadership Summit 2025',
-    location: 'Dar es Salaam, Tanzania',
-    year: '2025',
-    image: '/events/leadership-sumit.jpeg',
-    alt: 'PeakSkills Leadership Summit 2025',
-    tag: 'Summit',
-  },
-  {
-    id: 2,
-    title: 'Banking Leadership Conference',
-    location: 'Dodoma, Tanzania',
-    year: '2025',
-    image: '/events/banking-conference1.jpeg',
-    alt: 'Banking Leadership Conference',
-    tag: 'Conference',
-  },
-  {
-    id: 3,
-    title: 'Public Sector Governance Seminar',
-    location: 'Nairobi, Kenya',
-    year: '2024',
-    image: '/events/goverment-seminer1.jpeg',
-    alt: 'Public Sector Governance Seminar',
-    tag: 'Seminar',
-  },
-  {
-    id: 4,
-    title: 'HR Masterclass Series',
-    location: 'Dar es Salaam, Tanzania',
-    year: '2024',
-    image: '/events/hr-masterclass1.jpeg',
-    alt: 'Human Resources Masterclass Series',
-    tag: 'Masterclass',
-  },
-]
-
-const BOTTOM_EVENTS = [
-  {
-    id: 5,
-    title: 'Customer Service Excellence Workshop',
-    location: 'Arusha, Tanzania',
-    year: '2024',
-    image: '/events/cl21.jpeg',
-    alt: 'Customer Service Excellence',
-    tag: 'Workshop',
-  },
-  {
-    id: 6,
-    title: 'NGO Capacity Building Program',
-    location: 'Mwanza, Tanzania',
-    year: '2025',
-    image: '/events/cl22.jpeg',
-    alt: 'NGO Capacity Building',
-    tag: 'Program',
-  },
-  {
-    id: 7,
-    title: 'Corporate Leadership Retreat',
-    location: 'Zanzibar, Tanzania',
-    year: '2025',
-    image: '/events/cl23.jpeg',
-    alt: 'Corporate Leadership Retreat',
-    tag: 'Retreat',
-  },
-  {
-    id: 8,
-    title: 'Strategic Planning Masterclass',
-    location: 'Kigali, Rwanda',
-    year: '2024',
-    image: '/events/cl24.jpeg',
-    alt: 'Strategic Planning Masterclass',
-    tag: 'Strategy',
-  },
-  {
-    id: 9,
-    title: 'Team Collaboration Session',
-    location: 'Dar es Salaam, Tanzania',
-    year: '2024',
-    image: '/events/cl25.jpeg',
-    alt: 'Team Collaboration Session',
-    tag: 'Team Building',
-  },
-  {
-    id: 10,
-    title: 'Executive Development Workshop',
-    location: 'Entebbe, Uganda',
-    year: '2025',
-    image: '/events/cl26.jpeg',
-    alt: 'Executive Development Workshop',
-    tag: 'Executive',
-  },
-  {
-    id: 11,
-    title: 'Financial Management Seminar',
-    location: 'Dodoma, Tanzania',
-    year: '2024',
-    image: '/events/cl27.jpeg',
-    alt: 'Financial Management Seminar',
-    tag: 'Finance',
-  },
-]
+// Replaced hardcoded events with dynamic ones via props
 
 /* ─── Card ───────────────────────────────────────────────── */
 function EventCard({ event }: { event: any }) {
@@ -224,7 +121,7 @@ function EventCard({ event }: { event: any }) {
 }
 
 /* ─── Main Section ───────────────────────────────────────── */
-export default function EventsShowcase() {
+export default function EventsShowcase({ items = [] }: { items?: any[] }) {
   const track1Ref = useRef<HTMLDivElement>(null)
   const track2Ref = useRef<HTMLDivElement>(null)
   const animRef  = useRef<number | null>(null)
@@ -232,6 +129,36 @@ export default function EventsShowcase() {
   const pos2Ref  = useRef(0)
   const paused1Ref = useRef(false)
   const paused2Ref = useRef(false)
+
+  // Map database gallery items to component event format
+  const mappedEvents = items.map(item => ({
+    id: item.id,
+    title: item.event_title,
+    location: item.location || 'Tanzania',
+    year: item.event_date ? new Date(item.event_date).getFullYear().toString() : new Date().getFullYear().toString(),
+    image: item.image_url,
+    alt: item.event_title,
+    tag: item.tag || 'EVENT'
+  }))
+
+  // If there are very few items, duplicate them so the scrolling track doesn't look empty
+  const minItemsRequired = 8
+  let displayEvents = [...mappedEvents]
+  if (displayEvents.length > 0 && displayEvents.length < minItemsRequired) {
+    while (displayEvents.length < minItemsRequired) {
+      displayEvents = [...displayEvents, ...mappedEvents]
+    }
+  }
+
+  // Split into top and bottom tracks
+  const half = Math.ceil(displayEvents.length / 2)
+  const TOP_EVENTS = displayEvents.slice(0, half)
+  const BOTTOM_EVENTS = displayEvents.slice(half)
+
+  // If no items at all, don't render the section or just render empty (we'll return null to hide it)
+  if (displayEvents.length === 0) {
+    return null
+  }
 
   // Duplicate cards for seamless infinite loop
   const DOUBLED1 = [...TOP_EVENTS, ...TOP_EVENTS, ...TOP_EVENTS, ...TOP_EVENTS]

@@ -147,7 +147,7 @@ export default async function ProgramDetailPage({ params }: Props) {
                   overflow: 'hidden',
                   textOverflow: 'ellipsis'
                 }}>
-                  {program.short_description} {program.overview && program.overview.length > 0 ? program.overview : 'This comprehensive program is designed to equip you with the essential skills and practical knowledge needed to excel. Join our expert-led sessions to transform your career and achieve your professional goals.'}
+                  {program.short_description || 'This comprehensive program is designed to equip you with the essential skills and practical knowledge needed to excel. Join our expert-led sessions to transform your career and achieve your professional goals.'}
                 </p>
 
                 {/* Quick meta */}
@@ -201,9 +201,21 @@ export default async function ProgramDetailPage({ params }: Props) {
                 <h2 id="overview-heading" style={{ fontFamily: 'IBM Plex Sans, sans-serif', fontWeight: 600, fontSize: '22px', color: '#1D2430', margin: '0 0 20px', paddingBottom: '12px', borderBottom: '2px solid #DDE4EC' }}>
                   Program Overview
                 </h2>
-                <p style={{ fontFamily: 'Source Sans 3, sans-serif', fontSize: '16px', lineHeight: 1.75, color: '#1D2430', margin: 0 }}>
-                  {program.overview || 'The complete overview for this program is currently being updated. Please check back shortly or contact our training team for a detailed curriculum outline and module breakdown.'}
-                </p>
+                <div 
+                  style={{ 
+                    fontFamily: 'Source Sans 3, sans-serif', 
+                    fontSize: '16px', 
+                    lineHeight: 1.75, 
+                    color: '#1D2430', 
+                    margin: 0,
+                    wordBreak: 'break-word',
+                    overflowWrap: 'anywhere'
+                  }}
+                  className="rich-text-content"
+                  dangerouslySetInnerHTML={{ 
+                    __html: program.overview || '<p>The complete overview for this program is currently being updated. Please check back shortly or contact our training team for a detailed curriculum outline and module breakdown.</p>'
+                  }}
+                />
               </section>
 
               {/* Learning Outcomes */}

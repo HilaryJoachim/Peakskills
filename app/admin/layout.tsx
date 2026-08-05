@@ -24,6 +24,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           background-color: #0F172A;
           color: #F8FAFC;
         }
+        .admin-layout h1, .admin-layout h2, .admin-layout h3, .admin-layout h4, .admin-layout h5, .admin-layout h6 {
+          color: inherit;
+        }
       `}} />
       {/* Sidebar Navigation */}
       <AdminSidebar />

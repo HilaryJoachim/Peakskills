@@ -11,7 +11,7 @@ import CalendarCTA from '@/components/sections/CalendarCTA'
 import TrainingImpact from '@/components/sections/TrainingImpact'
 import ClienteleSection from '@/components/sections/ClienteleSection'
 import CategoriesRibbon from '@/components/sections/CategoriesRibbon'
-import { getPrograms } from '@/lib/supabase'
+import { getPrograms, getGalleryItems } from '@/lib/supabase'
 
 export const metadata: Metadata = {
   title: 'PeakSkills — Corporate Training, Consulting & Coaching | Tanzania',
@@ -23,7 +23,10 @@ export const metadata: Metadata = {
 export const revalidate = 3600
 
 export default async function HomePage() {
-  const featuredPrograms = await getPrograms({ limit: 6 })
+  const [featuredPrograms, galleryItems] = await Promise.all([
+    getPrograms({ limit: 6 }),
+    getGalleryItems()
+  ])
 
   return (
     <>
@@ -35,7 +38,7 @@ export default async function HomePage() {
         {/* V2.0: Industries We Serve */}
         <IndustriesWeServe />
         <FeaturedPrograms programs={featuredPrograms} />
-        <EventsShowcase />
+        <EventsShowcase items={galleryItems} />
         <CalendarCTA />
         <TrainingImpact />
         <ClienteleSection />

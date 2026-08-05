@@ -15,7 +15,11 @@ import {
   ChevronRight,
   ClipboardList,
   Menu,
-  X
+  X,
+  PenTool,
+  Image as ImageIcon,
+  Building2,
+  FolderOpen
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -27,6 +31,10 @@ const NAV_ITEMS = [
   { label: 'Sessions', href: '/admin/sessions', icon: Calendar },
   { label: 'Attendance', href: '/admin/attendance', icon: CalendarCheck },
   { label: 'Settings', href: '/admin/settings', icon: Settings },
+  { label: 'Programs CMS', href: '/admin/cms/programs', icon: PenTool },
+  { label: 'Gallery CMS', href: '/admin/cms/gallery', icon: ImageIcon },
+  { label: 'Company Info', href: '/admin/cms/company', icon: Building2 },
+  { label: 'Media Library', href: '/admin/cms/media', icon: FolderOpen },
 ]
 
 export default function AdminSidebar() {

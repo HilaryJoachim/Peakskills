@@ -160,6 +160,7 @@ create table gallery_items (
   event_date         date,
   location           text,
   image_url          text,
+  tag                text default 'EVENT',
   related_program_id uuid references programs(id) on delete set null
 );
 
