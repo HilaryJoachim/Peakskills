@@ -57,10 +57,9 @@ export async function upsertProgram(formData: FormData) {
       if (error) throw error
     }
     
-    // Clear cache so changes appear on live website
     revalidatePath('/')
-    revalidatePath('/programs')
-    revalidatePath('/admin/cms')
+    revalidatePath('/programs', 'layout')
+    revalidatePath('/admin/cms', 'layout')
     
     return { success: true }
   } catch (error: any) {
@@ -77,8 +76,8 @@ export async function deleteProgram(id: string) {
     if (error) throw error
     
     revalidatePath('/')
-    revalidatePath('/programs')
-    revalidatePath('/admin/cms')
+    revalidatePath('/programs', 'layout')
+    revalidatePath('/admin/cms', 'layout')
     
     return { success: true }
   } catch (error: any) {
