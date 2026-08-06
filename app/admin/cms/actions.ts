@@ -3,6 +3,8 @@
 import { supabaseAdmin } from '@/lib/supabaseAdmin'
 import { getAdminSession } from '@/lib/auth'
 
+import { revalidatePath } from 'next/cache'
+
 export async function upsertProgram(formData: FormData) {
   const session = await getAdminSession()
   if (!session) return { error: 'Unauthorized' }
@@ -54,6 +56,12 @@ export async function upsertProgram(formData: FormData) {
       const { error } = await supabaseAdmin.from('programs').insert([payload])
       if (error) throw error
     }
+    
+    // Clear cache so changes appear on live website
+    revalidatePath('/')
+    revalidatePath('/programs')
+    revalidatePath('/admin/cms')
+    
     return { success: true }
   } catch (error: any) {
     return { error: error.message || 'Failed to save program' }
@@ -67,6 +75,11 @@ export async function deleteProgram(id: string) {
   try {
     const { error } = await supabaseAdmin.from('programs').delete().eq('id', id)
     if (error) throw error
+    
+    revalidatePath('/')
+    revalidatePath('/programs')
+    revalidatePath('/admin/cms')
+    
     return { success: true }
   } catch (error: any) {
     return { error: error.message || 'Failed to delete program' }

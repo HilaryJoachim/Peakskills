@@ -31,12 +31,18 @@ export async function approveApplication(appId: string) {
     .from('applications')
     .update({ status: 'Approved - Awaiting Payment', approved_at: new Date().toISOString(), activation_token: token })
     .eq('id', appId)
-    .select()
+    .select('*, program:programs(price_per_person)')
     .single()
 
   if (appError) {
     console.error('Error updating application:', appError)
     throw new Error('Failed to approve application')
+  }
+
+  // Handle Supabase joining returning an object or array
+  let price = 0
+  if (app.program) {
+    price = Array.isArray(app.program) ? app.program[0]?.price_per_person || 0 : (app.program as any).price_per_person || 0
   }
 
   // Create student record
@@ -47,6 +53,7 @@ export async function approveApplication(appId: string) {
       application_id: app.id,
       status: 'Approved - Awaiting Payment',
       payment_status: 'Unpaid',
+      amount_due: price,
       payment_deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString() // 3 days
     })
 

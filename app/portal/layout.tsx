@@ -82,7 +82,7 @@ export default async function PortalLayout({ children }: { children: React.React
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowX: 'hidden' }}>
         
         {isAwaitingPayment && (
-          <PaymentBanner daysRemaining={daysRemaining} />
+          <PaymentBanner daysRemaining={daysRemaining} amountDue={student.amount_due} />
         )}
         
         <style dangerouslySetInnerHTML={{__html: `

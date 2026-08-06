@@ -3,8 +3,13 @@
 import { useState } from 'react'
 import { AlertTriangle, X } from 'lucide-react'
 
-export default function PaymentBanner({ daysRemaining }: { daysRemaining: number }) {
+export default function PaymentBanner({ daysRemaining, amountDue }: { daysRemaining: number, amountDue?: number }) {
   const [showModal, setShowModal] = useState(false)
+
+  // Format currency
+  const formattedAmount = amountDue !== undefined && amountDue !== null 
+    ? new Intl.NumberFormat('en-TZ', { style: 'currency', currency: 'TZS', maximumFractionDigits: 0 }).format(amountDue)
+    : 'TZS 30,000'
 
   return (
     <>
@@ -12,7 +17,7 @@ export default function PaymentBanner({ daysRemaining }: { daysRemaining: number
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <AlertTriangle size={18} color="#D97706" />
           <span style={{ fontSize: '14px', color: '#92400E', fontWeight: 500 }}>
-            Your admission has been approved. Course payment is required within <strong>3 Days</strong> to keep your seat reserved.
+            Your admission has been approved. Course payment of <strong>{formattedAmount}</strong> is required within <strong>3 Days</strong> to keep your seat reserved.
           </span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -38,7 +43,7 @@ export default function PaymentBanner({ daysRemaining }: { daysRemaining: number
               Maelekezo ya Malipo
             </h2>
             <ul style={{ paddingLeft: '20px', margin: 0, color: '#5C6B7A', fontFamily: 'Source Sans 3, sans-serif', fontSize: '15px', lineHeight: 1.6, display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <li><strong>Lipa Ada ya Usajili:</strong> TZS 30,000 kupitia benki au mtandao wowote wa simu.</li>
+              <li><strong>Lipa Ada:</strong> {formattedAmount} kupitia benki au mtandao wowote wa simu.</li>
               <li><strong>Tumia account namba:</strong> NMB 12XXXXX90</li>
               <li>Tuma risiti ya muamala kupitia WhatsApp au Email ya PeakSkills.</li>
               <li>Uthibitisho wa malipo utafanyika ndani ya masaa 24.</li>
