@@ -144,6 +144,11 @@ export async function upsertGalleryItem(formData: FormData) {
       const { error } = await supabaseAdmin.from('gallery_items').insert([payload])
       if (error) throw error
     }
+    
+    revalidatePath('/')
+    revalidatePath('/gallery', 'layout')
+    revalidatePath('/admin/cms', 'layout')
+    
     return { success: true }
   } catch (error: any) {
     return { error: error.message || 'Failed to save gallery item' }
@@ -157,6 +162,11 @@ export async function deleteGalleryItem(id: string) {
   try {
     const { error } = await supabaseAdmin.from('gallery_items').delete().eq('id', id)
     if (error) throw error
+    
+    revalidatePath('/')
+    revalidatePath('/gallery', 'layout')
+    revalidatePath('/admin/cms', 'layout')
+    
     return { success: true }
   } catch (error: any) {
     return { error: error.message || 'Failed to delete gallery item' }
