@@ -9,6 +9,8 @@ export interface PartnershipService {
   image_url: string
   contact_name: string
   whatsapp_number: string
+  category?: string | null
+  key_features?: string[] | null
 }
 
 interface PartnershipServiceCardProps {
