@@ -33,6 +33,7 @@ const NAV_ITEMS = [
   { label: 'Settings', href: '/admin/settings', icon: Settings },
   { label: 'Programs CMS', href: '/admin/cms/programs', icon: PenTool },
   { label: 'Gallery CMS', href: '/admin/cms/gallery', icon: ImageIcon },
+  { label: 'Partnership CMS', href: '/admin/cms/partnership-services', icon: Building2 },
   { label: 'Company Info', href: '/admin/cms/company', icon: Building2 },
   { label: 'Media Library', href: '/admin/cms/media', icon: FolderOpen },
 ]

@@ -22,7 +22,7 @@ if (!SUPABASE_URL || !SERVICE_KEY) {
   process.exit(1)
 }
 
-const sqlPath = path.join(__dirname, '..', 'supabase', 'migration.sql')
+const sqlPath = path.join(__dirname, '..', 'supabase', '009_partnership_services.sql')
 const sql = fs.readFileSync(sqlPath, 'utf8')
 
 // Supabase allows executing SQL via the REST endpoint with service_role key

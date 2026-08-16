@@ -20,6 +20,7 @@ const navLinks = [
       { label: 'Community Outreach', href: '/programs?category=community-outreach-programs' },
     ],
   },
+  { label: 'Partnership Services', href: '/partnership-services' },
   { label: 'Services', href: '/services' },
   { label: 'Mentorship', href: '/mentorship-coaching' },
   { label: 'About', href: '/about' },

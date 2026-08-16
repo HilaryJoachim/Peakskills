@@ -225,3 +225,29 @@ export async function getGalleryItems() {
     .order('event_date', { ascending: false })
   return data ?? []
 }
+
+export interface PartnershipService {
+  id: string
+  title: string
+  description: string
+  image_url: string
+  contact_name: string
+  whatsapp_number: string
+  created_at: string
+  category?: string | null
+  key_features?: string[] | null
+}
+
+export async function getPartnershipServices(): Promise<PartnershipService[]> {
+  if (!isConfigured()) return []
+  const { data, error } = await supabase!
+    .from('partnership_services')
+    .select('*')
+    .order('created_at', { ascending: false })
+  
+  if (error) {
+    console.error('Error fetching partnership services:', error.message)
+    return []
+  }
+  return (data as PartnershipService[]) ?? []
+}
